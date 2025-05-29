@@ -1,0 +1,48 @@
+3 Componentes:
+1. Q-network: Estima q(s,a)
+2. Buffer de experiencias (R, s, a)
+3. Target network: Copia la q-network
+
+Q-network tiene tantas entradas como elementos del estado y tantas salidas como acciones posibles.
+Dados los elementos del estado de input, cada nodo de salida representa q(s,a).
+
+Generación de baches:
+1. Se elige un estado inicial random Si.
+2. Usando Q-network se generan los q(Si,a)
+3. Se toma el de mayor q (tomando en cuenta epsilon)
+4. Se almacena en el buffer (Si, a, R, Si+1)
+
+R es immediata
+
+* ¿Se repite usando Si+1 como estado?
+* ¿Cuándo paramos?
+
+Uso de los baches
+Por cada (Si, a, R, Sf) en el buffer:
+1. Se usa Q-network para calcular q(s,a)
+2. Se usa target-network para calcular max(q(sf,a))
+3. Se usa el error entre q(s,a) y max(q(sf,a)) + R para entrenar Q-network
+
+Cada pocos baches:
+Se copia Q-network para generar la nueva target-network 
+
+
+"""
+The algorithm:
+
+    Initialization: Begin by initializing the parameters for two neural networks, Q(s,a) (referred to as the online network) and Q^(s,a) (known as the target network), with random weights. Both networks serve the function of mapping a state-action pair to a Q-value, which is an estimate of the expected return from that pair. Also, set the exploration probability ϵ to 1.0, and create an empty replay buffer to store past transition experiences.
+    Action Selection: Utilize an epsilon-greedy strategy for action selection. With a probability of ϵ, select a random action a, but in all other instances, choose the action a that maximizes the Q-value, i.e., a=argmaxaQ(s,a).
+    Experience Collection: Execute the chosen action a within the environment emulator and observe the resulting immediate reward r and the next state s′.
+    Experience Storage: Store the transition (s,a,r,s′) in the replay buffer for future reference.
+    Sampling: Randomly sample a mini-batch of transitions from the replay buffer for training the online network.
+    Target Computation: For every transition in the sampled mini-batch, compute the target value y. If the episode has ended at this step, y is simply the reward r. Otherwise, y is the sum of the reward and the discounted estimated optimal future Q-value, i.e., y=r+γmaxa′∈AQ^(s′,a′)
+    Loss Calculation: Compute the loss, which is the squared difference between the Q-value predicted by the online network and the computed target, i.e., L=(Q(s,a)−y)2
+    Online Network Update: Update the parameters of the online network Q(s,a) using Stochastic Gradient Descent (SGD) to minimize the loss.
+    Target Network Update: Every N steps, update the target network by copying the weights from the online network to the target network Q^(s,a).
+    Iterate: Repeat the process from step 2 until convergence.
+"""
+
+https://www.youtube.com/watch?v=x83WmvbRa2I
+https://www.cs.toronto.edu/~vmnih/docs/dqn.pdf
+https://colab.research.google.com/github/DeepRLCourse/Workshop-2-Material/blob/main/4-dqn-on-lunar-lander.ipynb#scrollTo=GkP_1ZvvlNeK
+https://www.lesswrong.com/posts/kyvCNgx9oAwJCuevo/deep-q-networks-explained

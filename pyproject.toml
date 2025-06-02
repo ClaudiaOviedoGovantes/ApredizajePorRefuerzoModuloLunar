@@ -1,0 +1,26 @@
+[project]
+name = "aprendizaje-modulo-lunar"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Your Name",email = "you@example.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10,<3.11"
+dependencies = [
+    "gymnasium[box2d] (>=1.1.1,<2.0.0)",
+    "tensorflow-io-gcs-filesystem (==0.27.0)",
+    "tensorflow (==2.19)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.5"
+

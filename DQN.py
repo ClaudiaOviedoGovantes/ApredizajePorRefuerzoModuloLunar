@@ -301,7 +301,7 @@ class DQNAgent():
             total_replays = 0
 
             for episode in range(0, self.episodes):
-                log(f"Episode #{episode+1} ({(total_replays+1)/self.episodes*self.replays_per_episode*100:.2f}%) starting...")
+                log(f"Episode #{episode+1} ({100*(total_replays+1)/self.episodes/self.replays_per_episode:.2f}%) starting...")
 
                 for replay in range(0, self.replays_per_episode):
 
@@ -331,7 +331,7 @@ class DQNAgent():
                         average_score = np.mean(score_buffer)
                         averaged_scores.append(average_score)
 
-                        log(f"    Replay {replay+1} ({(total_replays+1)/self.episodes*self.replays_per_episode*100:.2f}%) had score: {average_score:.2f}")
+                        log(f"    Replay {replay+1} ({100*(total_replays+1)/self.episodes/self.replays_per_episode:.2f}%) had score: {average_score:.2f}")
                         backup_path = f"{path}/episode_{episode+1}_replay_{replay+1}_({average_score:.2f}).h5"
                         log(f"    Saving model to {backup_path}")
                         self.save_model(backup_path)

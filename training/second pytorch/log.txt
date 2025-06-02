@@ -1,0 +1,72 @@
+Training DQN agent with parameters:
+  - gamma: 0.99
+  - epsilon: 1.0
+  - epsilon_decay: 0.995
+  - epsilon_min: 0.01
+  - learning_rate: 0.001
+  - batch_size: 64
+  - episodes: 1500
+  - target_network_update_freq: 10
+  - replays_per_episode: 1000
+
+Episode 1 had score: -177.86
+Saving model to training/training_86460/episode_1_(-177.86).h5
+Episode 51 had score: -167.19
+Saving model to training/training_86460/episode_51_(-167.19).h5
+Episode 101 had score: -138.52
+Saving model to training/training_86460/episode_101_(-138.52).h5
+Episode 151 had score: -89.98
+Saving model to training/training_86460/episode_151_(-89.98).h5
+Episode 201 had score: -51.82
+Saving model to training/training_86460/episode_201_(-51.82).h5
+Episode 251 had score: -28.60
+Saving model to training/training_86460/episode_251_(-28.60).h5
+Episode 301 had score: -4.23
+Saving model to training/training_86460/episode_301_(-4.23).h5
+Episode 351 had score: 7.09
+Saving model to training/training_86460/episode_351_(7.09).h5
+Episode 401 had score: -20.38
+Saving model to training/training_86460/episode_401_(-20.38).h5
+Episode 451 had score: -55.70
+Saving model to training/training_86460/episode_451_(-55.70).h5
+Episode 501 had score: -31.35
+Saving model to training/training_86460/episode_501_(-31.35).h5
+Episode 551 had score: 41.63
+Saving model to training/training_86460/episode_551_(41.63).h5
+Episode 601 had score: 120.28
+Saving model to training/training_86460/episode_601_(120.28).h5
+Episode 651 had score: 178.91
+Saving model to training/training_86460/episode_651_(178.91).h5
+Episode 701 had score: 201.29
+Saving model to training/training_86460/episode_701_(201.29).h5
+Episode 751 had score: 191.67
+Saving model to training/training_86460/episode_751_(191.67).h5
+Episode 801 had score: 117.99
+Saving model to training/training_86460/episode_801_(117.99).h5
+Episode 851 had score: 67.58
+Saving model to training/training_86460/episode_851_(67.58).h5
+Episode 901 had score: 59.00
+Saving model to training/training_86460/episode_901_(59.00).h5
+Episode 951 had score: 73.45
+Saving model to training/training_86460/episode_951_(73.45).h5
+Episode 1001 had score: 98.40
+Saving model to training/training_86460/episode_1001_(98.40).h5
+Episode 1051 had score: 115.97
+Saving model to training/training_86460/episode_1051_(115.97).h5
+Episode 1101 had score: 143.80
+Saving model to training/training_86460/episode_1101_(143.80).h5
+Episode 1151 had score: 146.72
+Saving model to training/training_86460/episode_1151_(146.72).h5
+Episode 1201 had score: 148.34
+Saving model to training/training_86460/episode_1201_(148.34).h5
+Episode 1251 had score: 143.38
+Saving model to training/training_86460/episode_1251_(143.38).h5
+Episode 1301 had score: 125.09
+Saving model to training/training_86460/episode_1301_(125.09).h5
+Episode 1351 had score: 134.14
+Saving model to training/training_86460/episode_1351_(134.14).h5
+Episode 1401 had score: 170.05
+Saving model to training/training_86460/episode_1401_(170.05).h5
+Episode 1451 had score: 215.66
+Saving model to training/training_86460/episode_1451_(215.66).h5
+Saving scores, averaged scores and epsilons to files...

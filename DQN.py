@@ -19,19 +19,36 @@ import keras
 # https://www.lesswrong.com/posts/kyvCNgx9oAwJCuevo/deep-q-networks-explained
 
 class DQN(keras.Model):
-    def __init__(self, state_size, action_size, hidden_size):
-        super().__init__()
+    def __init__(self, state_size, action_size, hidden_size, **kwargs):
+        super().__init__(**kwargs)
+
+        self.state_size = state_size
+        self.action_size = action_size
+        self.hidden_size = hidden_size
 
         self.dense1 = keras.layers.Dense(hidden_size, activation=keras.activations.leaky_relu)
         self.dense2 = keras.layers.Dense(hidden_size, activation=keras.activations.leaky_relu)
-        self.outputLayer = keras.layers.Dense(action_size, activation=keras.activations.leaky_relu)
+        self.outputLayer = keras.layers.Dense(action_size)
+
+        self(tf.ones((1,state_size)))
 
     def call(self, inputs):
         x = self.dense1(inputs)
         x = self.dense2(x)
         return self.outputLayer(x)
-    
-    #puede requerir mas funciones segun la libreria escogida.
+
+    def get_config(self):
+        config = super().get_config()
+        config.update({
+            "state_size": self.state_size,
+            "action_size": self.action_size,
+            "hidden_size": self.hidden_size,
+        })
+        return config
+
+    @classmethod
+    def from_config(cls, config):
+        return cls(**config)
     
 class ReplayBuffer():
     def __init__(self, buffer_size=10000):
@@ -41,7 +58,16 @@ class ReplayBuffer():
         self.buffer.append((state, action, reward, next_state, done))
         
     def sample(self, batch_size):
-        return random.sample(self.buffer, batch_size)
+        if (batch_size <= len(self.buffer)):
+            states, actions, rewards, next_states, dones = zip(*random.sample(self.buffer, batch_size))
+            states = tf.convert_to_tensor(states, dtype=tf.float32)
+            actions = tf.convert_to_tensor(actions, dtype=tf.int32)
+            rewards = tf.convert_to_tensor(rewards, dtype=tf.float32)
+            next_states = tf.convert_to_tensor(next_states, dtype=tf.float32)
+            dones = tf.convert_to_tensor(dones, dtype=tf.float32)
+            return states, actions, rewards, next_states, dones
+
+        return None
     
     def __len__(self):
         return len(self.buffer)
@@ -88,31 +114,30 @@ class DQNAgent():
         # Initialize the environment
         self.lunar = lunar
         
-        observation_space = lunar.env.observation_space
-        action_space = lunar.env.action_space
-        
         # La red neuronal debe tener un numero de parametros
         # de entrada igual al espacio de observaciones
         # y un numero de salida igual al espacio de acciones.
         # Asi como un numero de capas intermedias adecuadas.
+        self.observation_dims = lunar.env.observation_space.shape[0]
+        self.action_size = lunar.env.action_space.n
         HIDDEN_SIZE = 64
 
         self.q_network = DQN(
-            state_size=observation_space.shape[0],
-            action_size=action_space.n,
+            state_size=self.observation_dims,
+            action_size=self.action_size,
             hidden_size=HIDDEN_SIZE #elegir un tamaño de capa oculta
         )
         
         self.target_network = DQN(
-            state_size=observation_space.shape[0],
-            action_size=action_space.n,
+            state_size=self.observation_dims,
+            action_size=self.action_size,
             hidden_size=HIDDEN_SIZE #elegir un tamaño de capa oculta
         )
         
         # Set weights of target network to be the same as those of the q network
-        self.target_network.set_weights(self.q_network.get_weights())
+        self.update_target_network()
       
-        self.optimizer = keras.optimizers.Adam(learning_rate=0.01)# depende del framework que uses (tf o pytorch)
+        self.optimizer = keras.optimizers.Adam(learning_rate=learning_rate)# depende del framework que uses (tf o pytorch)
         
         print(f"QNetwork:\n {self.q_network}")
           
@@ -139,6 +164,9 @@ class DQNAgent():
 
     
         next_state, reward, done = self.lunar.take_action(action, verbose=False)
+
+        self.memory.push(state, action, reward, next_state, done)
+
         return next_state, reward, done, action
     
     def update_model(self):
@@ -148,20 +176,19 @@ class DQNAgent():
         and updates the model using the computed loss.
         """
         
-        states, actions, rewards, next_states, dones = self.memory.sample(self.batch_size)
+        sample = self.memory.sample(self.batch_size)
 
-        states = tf.convert_to_tensor(states, dtype=tf.float32)
-        actions = tf.convert_to_tensor(actions, dtype=tf.int32)
-        rewards = tf.convert_to_tensor(rewards, dtype=tf.float32)
-        next_states = tf.convert_to_tensor(next_states, dtype=tf.float32)
-        dones = tf.convert_to_tensor(dones, dtype=tf.float32)
+        if (sample == None):
+            return None
+
+        states, actions, rewards, next_states, dones = sample
 
         with tf.GradientTape() as tape:
             # Calculate q(s,a) according to the q-network
             # We use one-hot and reduce-sum to keep only the q for the selected action
             #   [ A, B, C, D ] * [ 0, 0, 1, 0 ] -> [ 0, 0, C, 0 ]
             #   reduce_sum([0, 0, C, 0]) -> 0 + 0 + C + 0 = C
-            q_values = tf.reduce_sum(self.q_network(states) * tf.one_hot(actions, 4), axis=1)
+            q_values = tf.reduce_sum(self.q_network(states) * tf.one_hot(actions, self.action_size), axis=1)
             
             # Get maximum q-value according to target network for the next state
             # And use it to approximate the next state
@@ -180,7 +207,7 @@ class DQNAgent():
         
     def update_target_network(self):
         # copiar los pesos de la red q a la red objetivo
-        pass
+        self.target_network.set_weights(self.q_network.get_weights())
         
     def save_model(self, path):
         """
@@ -191,7 +218,7 @@ class DQNAgent():
         None
         """
         # guardar el modelo en el path indicado
-        pass
+        keras.saving.save_model(self.target_network, path, overwrite=True, save_format="h5")
     
     def load_model(self, path):
         """
@@ -202,9 +229,15 @@ class DQNAgent():
         None
         """
         # cargar el modelo desde el path indicado
-        pass
+        buffer = keras.saving.load_model(path, {"DQN": DQN})
+
+        if (buffer == None):
+            raise ValueError(f"Tried to load model \"{path}\" resulted in None!")
+        self.q_network = buffer
+
+        self.update_target_network()
         
-    def train(self):
+    def train(self, save_path="modelo_DQN.h5", score_window_size=100, backup_interval=50):
         """
         Train the DQN agent on the given environment for a specified number of episodes.
         The agent will interact with the environment, store experiences in memory, and learn from them.
@@ -214,5 +247,93 @@ class DQNAgent():
         Returns:
         None
         """
+
+        """
+        Relevant parameters:
+        epsilon (float): Initial exploration rate.
+        epsilon_decay (float): Decay rate for exploration rate.
+        epsilon_min (float): Minimum exploration rate.
+        episodes (int): Number of episodes to train the agent.
+        target_network_update_freq (int): Frequency of updating the target network.
+        """
+
+        # For every episode:
+        # Until the simulation is done:
+        #   1. Act
+        #   2. Use a batch to update the model
+        #   3. Update the target network every freq steps
+        #   4. Decay epsilon
+
+        training_code = random.randint(0, 1000000)
+
+        print(f"Starting training (code {training_code})...")
+        # Create folder training/training_code if it doesn't exist
+        path = f"training/training_{training_code}"
+        os.makedirs(os.path.dirname(), exist_ok=True)
+        if not os.path.exists("training"):
+            os.makedirs("training")
         
-        pass
+        with open(f"{path}/log.txt", "a") as f:
+            def log(message):
+                """
+                Log a message to the console and to a file.
+                """
+                print(message)
+                f.write(message + "\n")
+            
+            log(
+                f"Training DQN agent with parameters:\n"
+                f"  - gamma: {self.gamma}\n"
+                f"  - epsilon: {self.epsilon}\n"
+                f"  - epsilon_decay: {self.epsilon_decay}\n"
+                f"  - epsilon_min: {self.epsilon_min}\n"
+                f"  - learning_rate: {self.learning_rate}\n"
+                f"  - batch_size: {self.batch_size}\n"
+                f"  - episodes: {self.episodes}\n"
+                f"  - target_network_update_freq: {self.target_updt_freq}\n"
+                f"  - replays_per_episode: {self.replays_per_episode}\n"
+            )
+
+            score_buffer = deque(maxlen=score_window_size)
+            scores = []
+            averaged_scores = []
+            epsilons = []
+
+            for episode in range(0, self.episodes):
+                if (episode % 10 == 0):
+                    print(f"Episode #{episode+1} ({(episode+1)/self.episodes*100:.2f}%)")
+
+                epsilons.append(self.epsilon)
+
+                self.lunar.reset()
+
+                score = 0
+
+                done = False
+                while not done:
+                    _next_state, reward, done, _action = self.act()
+                    self.update_model()
+
+                    if (len(self.memory) >= self.batch_size):
+                        pass
+
+                    score += reward
+                
+                self.epsilon = max(self.epsilon * self.epsilon_decay, self.epsilon_min)
+
+                score_buffer.append(score)
+                scores.append(score)
+
+                if (episode % self.target_updt_freq == 0):
+                    self.update_target_network()
+                if (episode % backup_interval == 0):
+                    average_score = np.mean(score_buffer)
+                    averaged_scores.append(average_score)
+
+                    log(f"Episode {episode+1} had score: {average_score:.2f}")
+                    backup_path = f"{path}/episode_{episode+1}_({average_score:.2f}).h5"
+                    log(f"Saving model to {backup_path}")
+                    self.save_model(backup_path)
+            
+            print(f"Training finished! Saving as \"{save_path}\"")
+            self.save_model(save_path)

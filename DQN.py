@@ -218,7 +218,7 @@ class DQNAgent():
         None
         """
         # guardar el modelo en el path indicado
-        keras.saving.save_model(self.target_network, path, overwrite=True, save_format="h5")
+        keras.saving.save_model(self.target_network, path, overwrite=True)
     
     def load_model(self, path):
         """
@@ -269,11 +269,9 @@ class DQNAgent():
         print(f"Starting training (code {training_code})...")
         # Create folder training/training_code if it doesn't exist
         path = f"training/training_{training_code}"
-        os.makedirs(os.path.dirname(), exist_ok=True)
-        if not os.path.exists("training"):
-            os.makedirs("training")
+        os.makedirs(path)
         
-        with open(f"{path}/log.txt", "a") as f:
+        with open(f"{path}/log.txt", "a+") as f:
             def log(message):
                 """
                 Log a message to the console and to a file.
@@ -334,6 +332,26 @@ class DQNAgent():
                     backup_path = f"{path}/episode_{episode+1}_({average_score:.2f}).h5"
                     log(f"Saving model to {backup_path}")
                     self.save_model(backup_path)
+            
+            log("Saving scores, averaged scores and epsilons to files...")
+
+            scores_path = f"{path}/summary_scores.csv"
+            averaged_scores_path = f"{path}/summary_averaged_scores.csv"
+            epsilons_path = f"{path}/summary_epsilons.csv"
+            with open(scores_path, "w") as f:
+                f.write("episode,score\n")
+                for i, score in enumerate(scores):
+                    f.write(f"{i+1},{score}\n")
+            with open(averaged_scores_path, "w") as f:
+                f.write("episode,average_score\n")
+                for i, average_score in enumerate(averaged_scores):
+                    f.write(f"{i*backup_interval+1},{average_score}\n")
+                if((self.episodes-1)%backup_interval != 0):
+                    f.write(f"{self.episodes},{np.mean(score_buffer)}\n")
+            with open(epsilons_path, "w") as f:
+                f.write("episode,epsilon\n")
+                for i, epsilon in enumerate(epsilons):
+                    f.write(f"{i+1},{epsilon}\n")
             
             print(f"Training finished! Saving as \"{save_path}\"")
             self.save_model(save_path)

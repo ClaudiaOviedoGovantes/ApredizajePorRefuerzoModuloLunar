@@ -57,6 +57,47 @@ class ReplayBuffer():
     
     def __len__(self):
         return len(self.buffer)
+
+
+class GPUReplayBuffer():
+    def __init__(self, buffer_size=10000, state_dim=8, device=None):
+        self.buffer_size = buffer_size
+        self.device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.pos = 0
+        self.len = 0
+
+        print((buffer_size, state_dim))
+        print(self.device)
+        self.states = torch.zeros((buffer_size, state_dim), dtype=torch.float32, device=self.device)
+        self.actions = torch.zeros(buffer_size, dtype=torch.int64, device=self.device)
+        self.rewards = torch.zeros(buffer_size, dtype=torch.float32, device=self.device)
+        self.next_states = torch.zeros((buffer_size, state_dim), dtype=torch.float32, device=self.device)
+        self.dones = torch.zeros(buffer_size, dtype=torch.float32, device=self.device)
+
+    def push(self, state_tensor, action, reward, next_state, done):
+        i = self.pos
+        self.states[i] = state_tensor
+        self.actions[i] = action
+        self.rewards[i] = reward
+        self.next_states[i] = next_state
+        self.dones[i] = float(done)
+        self.pos = (self.pos + 1) % self.buffer_size
+        self.len = min(self.len + 1, self.buffer_size)
+
+    def sample(self, batch_size):
+        if batch_size > self.len:
+            return None
+        choices = torch.randint(0, self.len, (batch_size,), device=self.device)
+        return (
+            self.states[choices],
+            self.actions[choices],
+            self.rewards[choices],
+            self.next_states[choices],
+            self.dones[choices]
+        )
+
+    def __len__(self):
+        return self.len
     
 class DQNAgent():
     def __init__(self, lunar: LunarLanderEnv, gamma=0.99, 
@@ -64,7 +105,7 @@ class DQNAgent():
                 learning_rate=0.001, batch_size=64, 
                 memory_size=10000, episodes=1500, 
                 target_network_update_freq=10,
-                replays_per_episode=1000, hidden_size=64):
+                replays_per_episode=1000, hidden_size=64, memory=None):
         """
         Initialize the DQN agent with the given parameters.
         
@@ -95,7 +136,10 @@ class DQNAgent():
         
         # Initialize replay memory
         # a deque is a double sided queue that allows us to append and pop elements from both ends
-        self.memory = ReplayBuffer(memory_size)
+        if memory == None:
+            self.memory = ReplayBuffer(memory_size)
+        else:
+            self.memory = memory
         
         # Initialize the environment
         self.lunar = lunar
@@ -354,8 +398,8 @@ class DQNAgent():
                 f.write("episode,average_score\n")
                 for i, average_score in enumerate(averaged_scores):
                     f.write(f"{i*backup_interval+1},{average_score}\n")
-                if((self.total_replays-1)%backup_interval != 0):
-                    f.write(f"{self.total_replays-1},{np.mean(score_buffer)}\n")
+                if((total_replays-1)%backup_interval != 0):
+                    f.write(f"{total_replays-1},{np.mean(score_buffer)}\n")
             with open(epsilons_path, "w") as f:
                 f.write("episode,epsilon\n")
                 for i, epsilon in enumerate(epsilons):
@@ -364,6 +408,82 @@ class DQNAgent():
             print(f"Training finished! Saving as \"{save_path}\"")
             self.save_model(save_path)
 
+class GPUDQNAgent(DQNAgent):
+    def __init__(self, memory_size=10000, **kwargs):
+        super().__init__(**kwargs, memory_size=memory_size, memory=GPUReplayBuffer(buffer_size=memory_size))
+
+    def act(self):
+        """
+        This function takes an action based on the current state of the environment.
+        it can be randomly sampled from the action space (based on epsilon) or
+        it can be the action with the highest Q-value from the model.
+        """
+        state = self.lunar.state
+        state_tensor = torch.tensor(state, dtype=torch.float32, device=self.device)
+
+        if (random.uniform(0,1) <= self.epsilon):
+            # With probability epsilon, choose a random action
+            action = self.lunar.env.action_space.sample()
+            action_tensor = action
+
+        else:
+            # With probability 1 - epsilon
+            # Use q-network to evaluate q(s,a) for all actions
+            self.q_network.eval()
+
+
+            with torch.no_grad():
+                action_tensor = self.q_network(state_tensor).argmax(0)
+
+            # Choose the action with the highest q(s,a)
+            action = action_tensor.cpu().item()
+    
+        next_state, reward, done = self.lunar.take_action(action, verbose=False)
+        next_state_tensor = torch.tensor(next_state, dtype=torch.float32, device=self.device)
+
+        self.memory.push(state_tensor, action_tensor, reward, next_state_tensor, done)
+
+        return next_state, reward, done, action
+    
+    def update_model(self):
+        """
+        Perform experience replay to train the model.
+        Samples a batch of experiences from memory, computes target Q-values,
+        and updates the model using the computed loss.
+        """
+        
+        sample = self.memory.sample(self.batch_size)
+
+        if (sample == None):
+            return None
+
+        states, actions, rewards, next_states, dones = sample
+
+        self.q_network.train()
+
+        # Calculate q(s,a) according to the q-network
+        # We use one-hot and reduce-sum to keep only the q for the selected action
+        #   [ A, B, C, D ] * [ 0, 0, 1, 0 ] -> [ 0, 0, C, 0 ]
+        #   reduce_sum([0, 0, C, 0]) -> 0 + 0 + C + 0 = C
+        q_values = self.q_network(states).gather(1, actions.unsqueeze(1)).squeeze(1)
+        
+        # Get maximum q-value according to target network for the next state
+        # And use it to approximate the next state
+        with torch.no_grad():
+            next_q_values = self.target_network(next_states).max(1)[0]
+        
+        # Calculate the expected q-values, only adding the next value if done exists
+        expected_q_values = rewards + self.gamma * next_q_values * (1 - dones)
+        
+        loss = torch.nn.MSELoss()(q_values, expected_q_values)
+
+        # Train using the gradients
+        self.optimizer.zero_grad()
+        loss.backward()
+        self.optimizer.step()
+
+        return loss
+    
 class DQNAgentDoubleDPrioritizedReplayMemory:
     def __init__(self, buffer_size=10000, state_size=8, alpha=0.6):
         self.len = 0
@@ -418,15 +538,14 @@ class DQNAgentDoubleDPrioritizedReplayMemory:
 
 class DQNAgentDoubleDPrioritizedReplay(DQNAgent):
     def __init__(self, alpha=0.6, initial_beta=0.4, memory_size=10000, **kwargs):
-        super().__init__(**kwargs, memory_size=memory_size)
+        super().__init__(**kwargs, memory_size=memory_size,memory=DQNAgentDoubleDPrioritizedReplayMemory(
+            buffer_size=memory_size,
+            alpha=alpha
+        ))
+
         self.initial_beta = initial_beta
         self.beta = initial_beta
         self.beta_increment = (1 - initial_beta) / self.episodes / self.replays_per_episode
-        self.memory = DQNAgentDoubleDPrioritizedReplayMemory(
-            buffer_size=kwargs.get('memory_size', 10000),
-            state_size=self.observation_dims,
-            alpha=alpha
-        )
 
     def act(self):
         """

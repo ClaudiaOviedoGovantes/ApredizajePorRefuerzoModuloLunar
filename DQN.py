@@ -8,13 +8,6 @@ import os
 
 from lunar import LunarLanderEnv
 
-
-# torch.backends.cudnn.enabled = False
-# torch.backends.cuda.enable_flash_sdp(False)
-# torch.backends.cuda.enable_math_sdp(True)
-# torch.backends.cuda.enable_mem_efficient_sdp(False)
-# torch.backends.cuda.enable_cudnn_sdp(False)
-
 # Lecturas interesantes: 
 # https://www.cs.toronto.edu/~vmnih/docs/dqn.pdf (Playing atari with DQN)
 # https://www.nature.com/articles/nature14236 (Human level control through RL)
@@ -37,68 +30,44 @@ class DQN(torch.nn.Module):
         return self.layer2_output(x)
     
 class ReplayBuffer():
-    def __init__(self, buffer_size=10000):
-        self.buffer = deque(maxlen=buffer_size) # deque es una doble cola que permite añadir y quitar elementos de ambos extremos
+    def __init__(self, buffer_size=10000, state_size=8):
+        self.len = 0
+        self.pos = 0
+        self.buffer_size = buffer_size
+
+        self.state_buffer = np.zeros((buffer_size, state_size), dtype=np.float32)
+        self.action_buffer = np.zeros((buffer_size,), dtype=np.int64)
+        self.reward_buffer = np.zeros((buffer_size,), dtype=np.float32)
+        self.next_state_buffer = np.zeros((buffer_size, state_size), dtype=np.float32)
+        self.done_buffer = np.zeros((buffer_size,), dtype=np.float32)
 
     def push(self, state, action, reward, next_state, done):
-        self.buffer.append((state, action, reward, next_state, done))
-        
-    def sample(self, batch_size):
-        if (batch_size <= len(self.buffer)):
-            states, actions, rewards, next_states, dones = zip(*random.sample(self.buffer, batch_size))
-            states = np.stack(states)
-            actions = np.array(actions, dtype=np.int64)
-            rewards = np.array(rewards, dtype=np.float32)
-            next_states = np.stack(next_states)
-            dones = np.array(dones, dtype=np.float32)
-            return states, actions, rewards, next_states, dones
-
-        return None
-    
-    def __len__(self):
-        return len(self.buffer)
-
-
-class GPUReplayBuffer():
-    def __init__(self, buffer_size=10000, state_dim=8, device=None):
-        self.buffer_size = buffer_size
-        self.device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.pos = 0
-        self.len = 0
-
-        print((buffer_size, state_dim))
-        print(self.device)
-        self.states = torch.zeros((buffer_size, state_dim), dtype=torch.float32, device=self.device)
-        self.actions = torch.zeros(buffer_size, dtype=torch.int64, device=self.device)
-        self.rewards = torch.zeros(buffer_size, dtype=torch.float32, device=self.device)
-        self.next_states = torch.zeros((buffer_size, state_dim), dtype=torch.float32, device=self.device)
-        self.dones = torch.zeros(buffer_size, dtype=torch.float32, device=self.device)
-
-    def push(self, state_tensor, action, reward, next_state, done):
         i = self.pos
-        self.states[i] = state_tensor
-        self.actions[i] = action
-        self.rewards[i] = reward
-        self.next_states[i] = next_state
-        self.dones[i] = float(done)
+        self.state_buffer[i] = state
+        self.action_buffer[i] = action
+        self.reward_buffer[i] = reward
+        self.next_state_buffer[i] = next_state
+        self.done_buffer[i] = done
+
         self.pos = (self.pos + 1) % self.buffer_size
         self.len = min(self.len + 1, self.buffer_size)
-
+        
     def sample(self, batch_size):
-        if batch_size > self.len:
+        if batch_size == 0 or batch_size > self.len:
             return None
-        choices = torch.randint(0, self.len, (batch_size,), device=self.device)
-        return (
-            self.states[choices],
-            self.actions[choices],
-            self.rewards[choices],
-            self.next_states[choices],
-            self.dones[choices]
-        )
 
+        choices = np.random.choice(self.len, batch_size, replace=False)
+
+        states = self.state_buffer[choices]
+        actions = self.action_buffer[choices]
+        rewards = self.reward_buffer[choices]
+        next_states = self.next_state_buffer[choices]
+        dones = self.done_buffer[choices]
+        return choices, states, actions, rewards, next_states, dones
+    
     def __len__(self):
         return self.len
-    
+
 class DQNAgent():
     def __init__(self, lunar: LunarLanderEnv, gamma=0.99, 
                 epsilon=1.0, epsilon_decay=0.995, epsilon_min=0.01,
@@ -281,23 +250,6 @@ class DQNAgent():
 
         self.update_target_network()
     
-    def perform_replay(self):
-        self.lunar.reset()
-
-        score = 0
-
-        done = False
-        while not done:
-            _next_state, reward, done, _action = self.act()
-            self.update_model()
-
-            score += reward
-        
-        self.epsilon = max(self.epsilon * self.epsilon_decay, self.epsilon_min)
-
-        return score
-
-        
     def train(self, save_path="modelo_DQN.h5", score_window_size=100, backup_interval=50):
         """
         Train the DQN agent on the given environment for a specified number of episodes.
@@ -365,6 +317,16 @@ class DQNAgent():
                 log(f"Episode #{episode+1} ({100*(total_replays+1)/self.episodes/self.replays_per_episode:.2f}%) starting...")
 
                 for replay in range(0, self.replays_per_episode):
+                    self.lunar.reset()
+
+                    score = 0
+
+                    done = False
+                    while not done:
+                        _next_state, reward, done, _action = self.act()
+                        score += reward
+                    
+                    self.epsilon = max(self.epsilon * self.epsilon_decay, self.epsilon_min)
 
                     score = self.perform_replay() 
 
@@ -373,6 +335,7 @@ class DQNAgent():
                     scores.append(score)
 
                     if (total_replays % self.target_updt_freq == 0):
+                        self.update_model()
                         self.update_target_network()
                     if (total_replays % backup_interval == 0):
                         average_score = np.mean(score_buffer)
@@ -405,112 +368,25 @@ class DQNAgent():
                 for i, epsilon in enumerate(epsilons):
                     f.write(f"{i+1},{epsilon}\n")
             
+            backup_path = f"{path}/final_({average_score:.2f}).h5"
+            log(f"Training finished! Saving as \"{backup_path}\"")
+            self.save_model(backup_path)
+
             print(f"Training finished! Saving as \"{save_path}\"")
             self.save_model(save_path)
-
-class GPUDQNAgent(DQNAgent):
-    def __init__(self, memory_size=10000, **kwargs):
-        super().__init__(**kwargs, memory_size=memory_size, memory=GPUReplayBuffer(buffer_size=memory_size))
-
-    def act(self):
-        """
-        This function takes an action based on the current state of the environment.
-        it can be randomly sampled from the action space (based on epsilon) or
-        it can be the action with the highest Q-value from the model.
-        """
-        state = self.lunar.state
-        state_tensor = torch.tensor(state, dtype=torch.float32, device=self.device)
-
-        if (random.uniform(0,1) <= self.epsilon):
-            # With probability epsilon, choose a random action
-            action = self.lunar.env.action_space.sample()
-            action_tensor = action
-
-        else:
-            # With probability 1 - epsilon
-            # Use q-network to evaluate q(s,a) for all actions
-            self.q_network.eval()
-
-
-            with torch.no_grad():
-                action_tensor = self.q_network(state_tensor).argmax(0)
-
-            # Choose the action with the highest q(s,a)
-            action = action_tensor.cpu().item()
     
-        next_state, reward, done = self.lunar.take_action(action, verbose=False)
-        next_state_tensor = torch.tensor(next_state, dtype=torch.float32, device=self.device)
-
-        self.memory.push(state_tensor, action_tensor, reward, next_state_tensor, done)
-
-        return next_state, reward, done, action
-    
-    def update_model(self):
-        """
-        Perform experience replay to train the model.
-        Samples a batch of experiences from memory, computes target Q-values,
-        and updates the model using the computed loss.
-        """
-        
-        sample = self.memory.sample(self.batch_size)
-
-        if (sample == None):
-            return None
-
-        states, actions, rewards, next_states, dones = sample
-
-        self.q_network.train()
-
-        # Calculate q(s,a) according to the q-network
-        # We use one-hot and reduce-sum to keep only the q for the selected action
-        #   [ A, B, C, D ] * [ 0, 0, 1, 0 ] -> [ 0, 0, C, 0 ]
-        #   reduce_sum([0, 0, C, 0]) -> 0 + 0 + C + 0 = C
-        q_values = self.q_network(states).gather(1, actions.unsqueeze(1)).squeeze(1)
-        
-        # Get maximum q-value according to target network for the next state
-        # And use it to approximate the next state
-        with torch.no_grad():
-            next_q_values = self.target_network(next_states).max(1)[0]
-        
-        # Calculate the expected q-values, only adding the next value if done exists
-        expected_q_values = rewards + self.gamma * next_q_values * (1 - dones)
-        
-        loss = torch.nn.MSELoss()(q_values, expected_q_values)
-
-        # Train using the gradients
-        self.optimizer.zero_grad()
-        loss.backward()
-        self.optimizer.step()
-
-        return loss
-    
-class DQNAgentDoubleDPrioritizedReplayMemory:
+class DQNAgentDoubleDPrioritizedReplayBuffer(ReplayBuffer):
     def __init__(self, buffer_size=10000, state_size=8, alpha=0.6):
-        self.len = 0
-        self.pos = 0
-        self.buffer_size = buffer_size
+        super().__init__(buffer_size=buffer_size, state_size=state_size)
         self.alpha = alpha
-
-        self.state_buffer = np.zeros((buffer_size, state_size), dtype=np.float32)
-        self.action_buffer = np.zeros((buffer_size,), dtype=np.int64)
-        self.reward_buffer = np.zeros((buffer_size,), dtype=np.float32)
-        self.next_state_buffer = np.zeros((buffer_size, state_size), dtype=np.float32)
-        self.done_buffer = np.zeros((buffer_size,), dtype=np.float32)
         self.priority_buffer = np.zeros((buffer_size,), dtype=np.float32)
 
     def push(self, state, action, reward, next_state, done):
-        max_priority = np.max(self.priority_buffer[:self.len]) if self.len > 0 else 1.0
-
         i = self.pos
-        self.state_buffer[i] = state
-        self.action_buffer[i] = action
-        self.reward_buffer[i] = reward
-        self.next_state_buffer[i] = next_state
-        self.done_buffer[i] = done
+        max_priority = np.max(self.priority_buffer[:self.len]) if self.len > 0 else 1.0
         self.priority_buffer[i] = max_priority  
 
-        self.pos = (self.pos + 1) % self.buffer_size
-        self.len = min(self.len + 1, self.buffer_size)
+        super.push(state, action, reward, next_state, done)
         
     def sample(self, batch_size, beta):
         if batch_size == 0 or batch_size > self.len:
@@ -538,7 +414,7 @@ class DQNAgentDoubleDPrioritizedReplayMemory:
 
 class DQNAgentDoubleDPrioritizedReplay(DQNAgent):
     def __init__(self, alpha=0.6, initial_beta=0.4, memory_size=10000, **kwargs):
-        super().__init__(**kwargs, memory_size=memory_size,memory=DQNAgentDoubleDPrioritizedReplayMemory(
+        super().__init__(**kwargs, memory_size=memory_size,memory=DQNAgentDoubleDPrioritizedReplayBuffer(
             buffer_size=memory_size,
             alpha=alpha
         ))
@@ -547,37 +423,6 @@ class DQNAgentDoubleDPrioritizedReplay(DQNAgent):
         self.beta = initial_beta
         self.beta_increment = (1 - initial_beta) / self.episodes / self.replays_per_episode
 
-    def act(self):
-        """
-        This function takes an action based on the current state of the environment.
-        it can be randomly sampled from the action space (based on epsilon) or
-        it can be the action with the highest Q-value from the model.
-        """
-        state = self.lunar.state
-
-        if (random.uniform(0,1) <= self.epsilon):
-            # With probability epsilon, choose a random action
-            action = self.lunar.env.action_space.sample()
-
-        else:
-            # With probability 1 - epsilon
-            # Use q-network to evaluate q(s,a) for all actions
-            self.q_network.eval()
-
-            state_tensor = torch.tensor(state).to(self.device).float()
-
-            with torch.no_grad():
-                result = self.q_network(state_tensor).cpu().numpy()
-
-            # Choose the action with the highest q(s,a)
-            action = np.argmax(result)
-    
-        next_state, reward, done = self.lunar.take_action(action, verbose=False)
-
-        self.memory.push(state, action, reward, next_state, done)
-
-        return next_state, reward, done, action
-    
     def update_model(self):
         """
         Perform experience replay to train the model.
@@ -626,21 +471,6 @@ class DQNAgentDoubleDPrioritizedReplay(DQNAgent):
         loss.backward()
         self.optimizer.step()
 
-        return loss
-
-    def perform_replay(self):
-        self.lunar.reset()
-
-        score = 0
-
-        done = False
-        while not done:
-            _next_state, reward, done, _action = self.act()
-            self.update_model()
-
-            score += reward
-        
-        self.epsilon = max(self.epsilon * self.epsilon_decay, self.epsilon_min)
         self.beta = min(self.beta + self.beta_increment, 1.0)
 
-        return score
+        return loss

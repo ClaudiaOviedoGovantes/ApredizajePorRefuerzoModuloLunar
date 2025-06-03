@@ -236,6 +236,23 @@ class DQNAgent():
         self.q_network.load_state_dict(state_dict)
 
         self.update_target_network()
+    
+    def perform_replay(self):
+        self.lunar.reset()
+
+        score = 0
+
+        done = False
+        while not done:
+            _next_state, reward, done, _action = self.act()
+            self.update_model()
+
+            score += reward
+        
+        self.epsilon = max(self.epsilon * self.epsilon_decay, self.epsilon_min)
+
+        return score
+
         
     def train(self, save_path="modelo_DQN.h5", score_window_size=100, backup_interval=50):
         """
@@ -305,25 +322,11 @@ class DQNAgent():
 
                 for replay in range(0, self.replays_per_episode):
 
-                    self.lunar.reset()
-
-                    score = 0
-
-                    done = False
-                    while not done:
-                        _next_state, reward, done, _action = self.act()
-                        self.update_model()
-
-                        if (len(self.memory) >= self.batch_size):
-                            pass
-
-                        score += reward
+                    score = self.perform_replay() 
 
                     epsilons.append(self.epsilon)
                     score_buffer.append(score)
                     scores.append(score)
-
-                    self.epsilon = max(self.epsilon * self.epsilon_decay, self.epsilon_min)
 
                     if (total_replays % self.target_updt_freq == 0):
                         self.update_target_network()
@@ -351,8 +354,8 @@ class DQNAgent():
                 f.write("episode,average_score\n")
                 for i, average_score in enumerate(averaged_scores):
                     f.write(f"{i*backup_interval+1},{average_score}\n")
-                if((self.episodes-1)%backup_interval != 0):
-                    f.write(f"{self.episodes},{np.mean(score_buffer)}\n")
+                if((self.total_replays-1)%backup_interval != 0):
+                    f.write(f"{self.total_replays-1},{np.mean(score_buffer)}\n")
             with open(epsilons_path, "w") as f:
                 f.write("episode,epsilon\n")
                 for i, epsilon in enumerate(epsilons):
@@ -360,3 +363,165 @@ class DQNAgent():
             
             print(f"Training finished! Saving as \"{save_path}\"")
             self.save_model(save_path)
+
+class DQNAgentDoubleDPrioritizedReplayMemory:
+    def __init__(self, buffer_size=10000, state_size=8, alpha=0.6):
+        self.len = 0
+        self.pos = 0
+        self.buffer_size = buffer_size
+        self.alpha = alpha
+
+        self.state_buffer = np.zeros((buffer_size, state_size), dtype=np.float32)
+        self.action_buffer = np.zeros((buffer_size,), dtype=np.int64)
+        self.reward_buffer = np.zeros((buffer_size,), dtype=np.float32)
+        self.next_state_buffer = np.zeros((buffer_size, state_size), dtype=np.float32)
+        self.done_buffer = np.zeros((buffer_size,), dtype=np.float32)
+        self.priority_buffer = np.zeros((buffer_size,), dtype=np.float32)
+
+    def push(self, state, action, reward, next_state, done):
+        max_priority = np.max(self.priority_buffer[:self.len]) if self.len > 0 else 1.0
+
+        i = self.pos
+        self.state_buffer[i] = state
+        self.action_buffer[i] = action
+        self.reward_buffer[i] = reward
+        self.next_state_buffer[i] = next_state
+        self.done_buffer[i] = done
+        self.priority_buffer[i] = max_priority  
+
+        self.pos = (self.pos + 1) % self.buffer_size
+        self.len = min(self.len + 1, self.buffer_size)
+        
+    def sample(self, batch_size, beta):
+        if batch_size == 0 or batch_size > self.len:
+            return None
+
+        probabilities = self.priority_buffer[:self.len] / np.sum(self.priority_buffer[:self.len])
+
+        choices = np.random.choice(self.len, batch_size, replace=False, p=probabilities)
+
+        weights = (self.len * probabilities[choices]) ** (-beta)
+        weights /= weights.max()
+
+        states = self.state_buffer[choices]
+        actions = self.action_buffer[choices]
+        rewards = self.reward_buffer[choices]
+        next_states = self.next_state_buffer[choices]
+        dones = self.done_buffer[choices]
+        return choices, states, actions, rewards, next_states, dones, weights
+    
+    def update_priorities(self, indices, losses):
+        self.priority_buffer[indices] = (losses + 1e-6)**self.alpha
+    
+    def __len__(self):
+        return self.len
+
+class DQNAgentDoubleDPrioritizedReplay(DQNAgent):
+    def __init__(self, alpha=0.6, initial_beta=0.4, memory_size=10000, **kwargs):
+        super().__init__(**kwargs, memory_size=memory_size)
+        self.initial_beta = initial_beta
+        self.beta = initial_beta
+        self.beta_increment = (1 - initial_beta) / self.episodes / self.replays_per_episode
+        self.memory = DQNAgentDoubleDPrioritizedReplayMemory(
+            buffer_size=kwargs.get('memory_size', 10000),
+            state_size=self.observation_dims,
+            alpha=alpha
+        )
+
+    def act(self):
+        """
+        This function takes an action based on the current state of the environment.
+        it can be randomly sampled from the action space (based on epsilon) or
+        it can be the action with the highest Q-value from the model.
+        """
+        state = self.lunar.state
+
+        if (random.uniform(0,1) <= self.epsilon):
+            # With probability epsilon, choose a random action
+            action = self.lunar.env.action_space.sample()
+
+        else:
+            # With probability 1 - epsilon
+            # Use q-network to evaluate q(s,a) for all actions
+            self.q_network.eval()
+
+            state_tensor = torch.tensor(state).to(self.device).float()
+
+            with torch.no_grad():
+                result = self.q_network(state_tensor).cpu().numpy()
+
+            # Choose the action with the highest q(s,a)
+            action = np.argmax(result)
+    
+        next_state, reward, done = self.lunar.take_action(action, verbose=False)
+
+        self.memory.push(state, action, reward, next_state, done)
+
+        return next_state, reward, done, action
+    
+    def update_model(self):
+        """
+        Perform experience replay to train the model.
+        Samples a batch of experiences from memory, computes target Q-values,
+        and updates the model using the computed loss.
+        """
+        
+        sample = self.memory.sample(self.batch_size, beta=self.beta)
+
+        if (sample == None):
+            return None
+
+        choices, states, actions, rewards, next_states, dones, weights = sample
+        states = torch.from_numpy(states).float().to(self.device)
+        actions = torch.from_numpy(actions).long().to(self.device)
+        rewards = torch.from_numpy(rewards).float().to(self.device)
+        next_states = torch.from_numpy(next_states).float().to(self.device)
+        dones = torch.from_numpy(dones).float().to(self.device)
+        weights = torch.from_numpy(weights).float().to(self.device)
+
+        self.q_network.train()
+
+        # Calculate q(s,a) according to the q-network
+        # We use one-hot and reduce-sum to keep only the q for the selected action
+        #   [ A, B, C, D ] * [ 0, 0, 1, 0 ] -> [ 0, 0, C, 0 ]
+        #   reduce_sum([0, 0, C, 0]) -> 0 + 0 + C + 0 = C
+        q_values = self.q_network(states).gather(1, actions.unsqueeze(1)).squeeze(1)
+        
+        # Get maximum q-value according to target network for the next state
+        # And use it to approximate the next state
+        with torch.no_grad():
+            arg_max = self.q_network(next_states).argmax(1)
+            next_q_values = self.target_network(next_states).gather(1, arg_max.unsqueeze(1)).squeeze(-1)
+        
+        # Calculate the expected q-values, only adding the next value if done exists
+        expected_q_values = rewards + self.gamma * next_q_values * (1 - dones)
+
+        errors = q_values - expected_q_values # Calculate error not squared, to use it for the priorities
+        new_priorities = errors.abs().detach().cpu().numpy()
+        self.memory.update_priorities(choices, new_priorities)
+
+        loss = (weights * errors.pow(2)).mean() # Error squared is MSE
+        
+        # Train using the gradients
+        self.optimizer.zero_grad()
+        loss.backward()
+        self.optimizer.step()
+
+        return loss
+
+    def perform_replay(self):
+        self.lunar.reset()
+
+        score = 0
+
+        done = False
+        while not done:
+            _next_state, reward, done, _action = self.act()
+            self.update_model()
+
+            score += reward
+        
+        self.epsilon = max(self.epsilon * self.epsilon_decay, self.epsilon_min)
+        self.beta = min(self.beta + self.beta_increment, 1.0)
+
+        return score

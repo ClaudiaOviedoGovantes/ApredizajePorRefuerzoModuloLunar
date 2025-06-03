@@ -1,0 +1,586 @@
+[2025-06-03T04:33:08] Training DQN agent with parameters:
+  - gamma: 0.99
+  - epsilon: 1.0
+  - epsilon_decay: 0.995
+  - epsilon_min: 0.01
+  - learning_rate: 0.001
+  - batch_size: 64
+  - episodes: 14
+  - target_network_update_freq: 10
+  - replays_per_episode: 1000
+
+[2025-06-03T04:33:08] Episode #1 (0.01%) starting...
+[2025-06-03T04:33:08]     Replay 1 (0.01%) had score: -212.46
+[2025-06-03T04:33:08]     Saving model to training/training_14676/episode_1_replay_1_(-212.46).h5
+[2025-06-03T04:33:23]     Replay 51 (0.36%) had score: -132.28
+[2025-06-03T04:33:23]     Saving model to training/training_14676/episode_1_replay_51_(-132.28).h5
+[2025-06-03T04:33:42]     Replay 101 (0.72%) had score: -114.08
+[2025-06-03T04:33:42]     Saving model to training/training_14676/episode_1_replay_101_(-114.08).h5
+[2025-06-03T04:34:10]     Replay 151 (1.08%) had score: -77.97
+[2025-06-03T04:34:10]     Saving model to training/training_14676/episode_1_replay_151_(-77.97).h5
+[2025-06-03T04:35:05]     Replay 201 (1.44%) had score: -85.10
+[2025-06-03T04:35:05]     Saving model to training/training_14676/episode_1_replay_201_(-85.10).h5
+[2025-06-03T04:36:53]     Replay 251 (1.79%) had score: -100.01
+[2025-06-03T04:36:53]     Saving model to training/training_14676/episode_1_replay_251_(-100.01).h5
+[2025-06-03T04:38:46]     Replay 301 (2.15%) had score: -55.11
+[2025-06-03T04:38:46]     Saving model to training/training_14676/episode_1_replay_301_(-55.11).h5
+[2025-06-03T04:40:39]     Replay 351 (2.51%) had score: -60.13
+[2025-06-03T04:40:39]     Saving model to training/training_14676/episode_1_replay_351_(-60.13).h5
+[2025-06-03T04:42:13]     Replay 401 (2.86%) had score: -68.05
+[2025-06-03T04:42:13]     Saving model to training/training_14676/episode_1_replay_401_(-68.05).h5
+[2025-06-03T04:43:55]     Replay 451 (3.22%) had score: -10.01
+[2025-06-03T04:43:55]     Saving model to training/training_14676/episode_1_replay_451_(-10.01).h5
+[2025-06-03T04:45:31]     Replay 501 (3.58%) had score: 14.74
+[2025-06-03T04:45:31]     Saving model to training/training_14676/episode_1_replay_501_(14.74).h5
+[2025-06-03T04:46:38]     Replay 551 (3.94%) had score: -51.28
+[2025-06-03T04:46:38]     Saving model to training/training_14676/episode_1_replay_551_(-51.28).h5
+[2025-06-03T04:47:38]     Replay 601 (4.29%) had score: -77.29
+[2025-06-03T04:47:38]     Saving model to training/training_14676/episode_1_replay_601_(-77.29).h5
+[2025-06-03T04:48:36]     Replay 651 (4.65%) had score: 13.02
+[2025-06-03T04:48:36]     Saving model to training/training_14676/episode_1_replay_651_(13.02).h5
+[2025-06-03T04:49:18]     Replay 701 (5.01%) had score: 27.70
+[2025-06-03T04:49:18]     Saving model to training/training_14676/episode_1_replay_701_(27.70).h5
+[2025-06-03T04:50:07]     Replay 751 (5.36%) had score: 28.28
+[2025-06-03T04:50:07]     Saving model to training/training_14676/episode_1_replay_751_(28.28).h5
+[2025-06-03T04:50:59]     Replay 801 (5.72%) had score: 97.68
+[2025-06-03T04:50:59]     Saving model to training/training_14676/episode_1_replay_801_(97.68).h5
+[2025-06-03T04:51:55]     Replay 851 (6.08%) had score: 129.81
+[2025-06-03T04:51:55]     Saving model to training/training_14676/episode_1_replay_851_(129.81).h5
+[2025-06-03T04:52:36]     Replay 901 (6.44%) had score: 91.07
+[2025-06-03T04:52:36]     Saving model to training/training_14676/episode_1_replay_901_(91.07).h5
+[2025-06-03T04:53:28]     Replay 951 (6.79%) had score: 102.31
+[2025-06-03T04:53:28]     Saving model to training/training_14676/episode_1_replay_951_(102.31).h5
+[2025-06-03T04:54:19] Episode #2 (7.15%) starting...
+[2025-06-03T04:54:20]     Replay 1 (7.15%) had score: 141.02
+[2025-06-03T04:54:20]     Saving model to training/training_14676/episode_2_replay_1_(141.02).h5
+[2025-06-03T04:55:21]     Replay 51 (7.51%) had score: 153.81
+[2025-06-03T04:55:21]     Saving model to training/training_14676/episode_2_replay_51_(153.81).h5
+[2025-06-03T04:56:09]     Replay 101 (7.86%) had score: 159.20
+[2025-06-03T04:56:09]     Saving model to training/training_14676/episode_2_replay_101_(159.20).h5
+[2025-06-03T04:57:02]     Replay 151 (8.22%) had score: 162.66
+[2025-06-03T04:57:02]     Saving model to training/training_14676/episode_2_replay_151_(162.66).h5
+[2025-06-03T04:57:53]     Replay 201 (8.58%) had score: 183.35
+[2025-06-03T04:57:53]     Saving model to training/training_14676/episode_2_replay_201_(183.35).h5
+[2025-06-03T04:58:37]     Replay 251 (8.94%) had score: 176.63
+[2025-06-03T04:58:37]     Saving model to training/training_14676/episode_2_replay_251_(176.63).h5
+[2025-06-03T04:59:22]     Replay 301 (9.29%) had score: 138.83
+[2025-06-03T04:59:22]     Saving model to training/training_14676/episode_2_replay_301_(138.83).h5
+[2025-06-03T05:00:07]     Replay 351 (9.65%) had score: 105.74
+[2025-06-03T05:00:07]     Saving model to training/training_14676/episode_2_replay_351_(105.74).h5
+[2025-06-03T05:00:57]     Replay 401 (10.01%) had score: 84.83
+[2025-06-03T05:00:57]     Saving model to training/training_14676/episode_2_replay_401_(84.83).h5
+[2025-06-03T05:01:55]     Replay 451 (10.36%) had score: 64.20
+[2025-06-03T05:01:55]     Saving model to training/training_14676/episode_2_replay_451_(64.20).h5
+[2025-06-03T05:02:39]     Replay 501 (10.72%) had score: 89.17
+[2025-06-03T05:02:39]     Saving model to training/training_14676/episode_2_replay_501_(89.17).h5
+[2025-06-03T05:03:30]     Replay 551 (11.08%) had score: 128.82
+[2025-06-03T05:03:30]     Saving model to training/training_14676/episode_2_replay_551_(128.82).h5
+[2025-06-03T05:04:23]     Replay 601 (11.44%) had score: 138.78
+[2025-06-03T05:04:23]     Saving model to training/training_14676/episode_2_replay_601_(138.78).h5
+[2025-06-03T05:05:11]     Replay 651 (11.79%) had score: 167.14
+[2025-06-03T05:05:11]     Saving model to training/training_14676/episode_2_replay_651_(167.14).h5
+[2025-06-03T05:06:02]     Replay 701 (12.15%) had score: 178.75
+[2025-06-03T05:06:02]     Saving model to training/training_14676/episode_2_replay_701_(178.75).h5
+[2025-06-03T05:06:52]     Replay 751 (12.51%) had score: 168.34
+[2025-06-03T05:06:52]     Saving model to training/training_14676/episode_2_replay_751_(168.34).h5
+[2025-06-03T05:07:43]     Replay 801 (12.86%) had score: 180.38
+[2025-06-03T05:07:43]     Saving model to training/training_14676/episode_2_replay_801_(180.38).h5
+[2025-06-03T05:08:48]     Replay 851 (13.22%) had score: 116.97
+[2025-06-03T05:08:48]     Saving model to training/training_14676/episode_2_replay_851_(116.97).h5
+[2025-06-03T05:09:36]     Replay 901 (13.58%) had score: 63.29
+[2025-06-03T05:09:36]     Saving model to training/training_14676/episode_2_replay_901_(63.29).h5
+[2025-06-03T05:10:20]     Replay 951 (13.94%) had score: 22.03
+[2025-06-03T05:10:20]     Saving model to training/training_14676/episode_2_replay_951_(22.03).h5
+[2025-06-03T05:11:20] Episode #3 (14.29%) starting...
+[2025-06-03T05:11:22]     Replay 1 (14.29%) had score: 22.23
+[2025-06-03T05:11:22]     Saving model to training/training_14676/episode_3_replay_1_(22.23).h5
+[2025-06-03T05:12:21]     Replay 51 (14.65%) had score: 113.95
+[2025-06-03T05:12:21]     Saving model to training/training_14676/episode_3_replay_51_(113.95).h5
+[2025-06-03T05:13:17]     Replay 101 (15.01%) had score: 142.48
+[2025-06-03T05:13:17]     Saving model to training/training_14676/episode_3_replay_101_(142.48).h5
+[2025-06-03T05:14:19]     Replay 151 (15.36%) had score: 170.09
+[2025-06-03T05:14:19]     Saving model to training/training_14676/episode_3_replay_151_(170.09).h5
+[2025-06-03T05:15:06]     Replay 201 (15.72%) had score: 177.33
+[2025-06-03T05:15:06]     Saving model to training/training_14676/episode_3_replay_201_(177.33).h5
+[2025-06-03T05:15:48]     Replay 251 (16.08%) had score: 131.47
+[2025-06-03T05:15:48]     Saving model to training/training_14676/episode_3_replay_251_(131.47).h5
+[2025-06-03T05:16:33]     Replay 301 (16.44%) had score: 114.94
+[2025-06-03T05:16:33]     Saving model to training/training_14676/episode_3_replay_301_(114.94).h5
+[2025-06-03T05:17:16]     Replay 351 (16.79%) had score: 68.63
+[2025-06-03T05:17:16]     Saving model to training/training_14676/episode_3_replay_351_(68.63).h5
+[2025-06-03T05:18:19]     Replay 401 (17.15%) had score: 31.37
+[2025-06-03T05:18:19]     Saving model to training/training_14676/episode_3_replay_401_(31.37).h5
+[2025-06-03T05:19:24]     Replay 451 (17.51%) had score: 48.32
+[2025-06-03T05:19:24]     Saving model to training/training_14676/episode_3_replay_451_(48.32).h5
+[2025-06-03T05:20:14]     Replay 501 (17.86%) had score: 6.70
+[2025-06-03T05:20:14]     Saving model to training/training_14676/episode_3_replay_501_(6.70).h5
+[2025-06-03T05:21:08]     Replay 551 (18.22%) had score: -89.24
+[2025-06-03T05:21:08]     Saving model to training/training_14676/episode_3_replay_551_(-89.24).h5
+[2025-06-03T05:21:54]     Replay 601 (18.58%) had score: -138.87
+[2025-06-03T05:21:54]     Saving model to training/training_14676/episode_3_replay_601_(-138.87).h5
+[2025-06-03T05:23:00]     Replay 651 (18.94%) had score: -52.06
+[2025-06-03T05:23:00]     Saving model to training/training_14676/episode_3_replay_651_(-52.06).h5
+[2025-06-03T05:23:49]     Replay 701 (19.29%) had score: -15.60
+[2025-06-03T05:23:49]     Saving model to training/training_14676/episode_3_replay_701_(-15.60).h5
+[2025-06-03T05:24:40]     Replay 751 (19.65%) had score: -70.55
+[2025-06-03T05:24:40]     Saving model to training/training_14676/episode_3_replay_751_(-70.55).h5
+[2025-06-03T05:25:30]     Replay 801 (20.01%) had score: -60.87
+[2025-06-03T05:25:30]     Saving model to training/training_14676/episode_3_replay_801_(-60.87).h5
+[2025-06-03T05:25:55]     Replay 851 (20.36%) had score: -114.78
+[2025-06-03T05:25:55]     Saving model to training/training_14676/episode_3_replay_851_(-114.78).h5
+[2025-06-03T05:26:27]     Replay 901 (20.72%) had score: -173.18
+[2025-06-03T05:26:27]     Saving model to training/training_14676/episode_3_replay_901_(-173.18).h5
+[2025-06-03T05:26:53]     Replay 951 (21.08%) had score: -176.27
+[2025-06-03T05:26:53]     Saving model to training/training_14676/episode_3_replay_951_(-176.27).h5
+[2025-06-03T05:27:44] Episode #4 (21.44%) starting...
+[2025-06-03T05:27:48]     Replay 1 (21.44%) had score: -166.87
+[2025-06-03T05:27:48]     Saving model to training/training_14676/episode_4_replay_1_(-166.87).h5
+[2025-06-03T05:29:41]     Replay 51 (21.79%) had score: -125.60
+[2025-06-03T05:29:41]     Saving model to training/training_14676/episode_4_replay_51_(-125.60).h5
+[2025-06-03T05:31:51]     Replay 101 (22.15%) had score: -94.07
+[2025-06-03T05:31:51]     Saving model to training/training_14676/episode_4_replay_101_(-94.07).h5
+[2025-06-03T05:33:29]     Replay 151 (22.51%) had score: -122.61
+[2025-06-03T05:33:29]     Saving model to training/training_14676/episode_4_replay_151_(-122.61).h5
+[2025-06-03T05:35:06]     Replay 201 (22.86%) had score: -204.11
+[2025-06-03T05:35:06]     Saving model to training/training_14676/episode_4_replay_201_(-204.11).h5
+[2025-06-03T05:36:47]     Replay 251 (23.22%) had score: -232.58
+[2025-06-03T05:36:47]     Saving model to training/training_14676/episode_4_replay_251_(-232.58).h5
+[2025-06-03T05:37:56]     Replay 301 (23.58%) had score: -182.02
+[2025-06-03T05:37:56]     Saving model to training/training_14676/episode_4_replay_301_(-182.02).h5
+[2025-06-03T05:39:14]     Replay 351 (23.94%) had score: -63.03
+[2025-06-03T05:39:14]     Saving model to training/training_14676/episode_4_replay_351_(-63.03).h5
+[2025-06-03T05:40:21]     Replay 401 (24.29%) had score: 69.63
+[2025-06-03T05:40:21]     Saving model to training/training_14676/episode_4_replay_401_(69.63).h5
+[2025-06-03T05:41:11]     Replay 451 (24.65%) had score: 122.93
+[2025-06-03T05:41:11]     Saving model to training/training_14676/episode_4_replay_451_(122.93).h5
+[2025-06-03T05:42:03]     Replay 501 (25.01%) had score: 151.99
+[2025-06-03T05:42:03]     Saving model to training/training_14676/episode_4_replay_501_(151.99).h5
+[2025-06-03T05:43:01]     Replay 551 (25.36%) had score: 143.22
+[2025-06-03T05:43:01]     Saving model to training/training_14676/episode_4_replay_551_(143.22).h5
+[2025-06-03T05:44:17]     Replay 601 (25.72%) had score: 90.05
+[2025-06-03T05:44:17]     Saving model to training/training_14676/episode_4_replay_601_(90.05).h5
+[2025-06-03T05:45:52]     Replay 651 (26.08%) had score: 70.56
+[2025-06-03T05:45:52]     Saving model to training/training_14676/episode_4_replay_651_(70.56).h5
+[2025-06-03T05:46:50]     Replay 701 (26.44%) had score: 99.51
+[2025-06-03T05:46:50]     Saving model to training/training_14676/episode_4_replay_701_(99.51).h5
+[2025-06-03T05:47:39]     Replay 751 (26.79%) had score: 106.87
+[2025-06-03T05:47:39]     Saving model to training/training_14676/episode_4_replay_751_(106.87).h5
+[2025-06-03T05:48:37]     Replay 801 (27.15%) had score: 71.51
+[2025-06-03T05:48:37]     Saving model to training/training_14676/episode_4_replay_801_(71.51).h5
+[2025-06-03T05:49:22]     Replay 851 (27.51%) had score: 115.29
+[2025-06-03T05:49:22]     Saving model to training/training_14676/episode_4_replay_851_(115.29).h5
+[2025-06-03T05:50:04]     Replay 901 (27.86%) had score: 206.60
+[2025-06-03T05:50:04]     Saving model to training/training_14676/episode_4_replay_901_(206.60).h5
+[2025-06-03T05:50:56]     Replay 951 (28.22%) had score: 236.80
+[2025-06-03T05:50:56]     Saving model to training/training_14676/episode_4_replay_951_(236.80).h5
+[2025-06-03T05:51:54] Episode #5 (28.58%) starting...
+[2025-06-03T05:51:55]     Replay 1 (28.58%) had score: 220.09
+[2025-06-03T05:51:55]     Saving model to training/training_14676/episode_5_replay_1_(220.09).h5
+[2025-06-03T05:52:43]     Replay 51 (28.94%) had score: 179.78
+[2025-06-03T05:52:43]     Saving model to training/training_14676/episode_5_replay_51_(179.78).h5
+[2025-06-03T05:53:40]     Replay 101 (29.29%) had score: 169.47
+[2025-06-03T05:53:40]     Saving model to training/training_14676/episode_5_replay_101_(169.47).h5
+[2025-06-03T05:54:39]     Replay 151 (29.65%) had score: 166.74
+[2025-06-03T05:54:39]     Saving model to training/training_14676/episode_5_replay_151_(166.74).h5
+[2025-06-03T05:55:17]     Replay 201 (30.01%) had score: 111.78
+[2025-06-03T05:55:17]     Saving model to training/training_14676/episode_5_replay_201_(111.78).h5
+[2025-06-03T05:56:13]     Replay 251 (30.36%) had score: 67.55
+[2025-06-03T05:56:13]     Saving model to training/training_14676/episode_5_replay_251_(67.55).h5
+[2025-06-03T05:57:25]     Replay 301 (30.72%) had score: 40.21
+[2025-06-03T05:57:25]     Saving model to training/training_14676/episode_5_replay_301_(40.21).h5
+[2025-06-03T05:58:16]     Replay 351 (31.08%) had score: 28.98
+[2025-06-03T05:58:16]     Saving model to training/training_14676/episode_5_replay_351_(28.98).h5
+[2025-06-03T05:59:26]     Replay 401 (31.44%) had score: 40.79
+[2025-06-03T05:59:26]     Saving model to training/training_14676/episode_5_replay_401_(40.79).h5
+[2025-06-03T06:01:23]     Replay 451 (31.79%) had score: 44.92
+[2025-06-03T06:01:23]     Saving model to training/training_14676/episode_5_replay_451_(44.92).h5
+[2025-06-03T06:02:58]     Replay 501 (32.15%) had score: 57.76
+[2025-06-03T06:02:58]     Saving model to training/training_14676/episode_5_replay_501_(57.76).h5
+[2025-06-03T06:04:47]     Replay 551 (32.51%) had score: 84.88
+[2025-06-03T06:04:47]     Saving model to training/training_14676/episode_5_replay_551_(84.88).h5
+[2025-06-03T06:05:54]     Replay 601 (32.86%) had score: 160.44
+[2025-06-03T06:05:54]     Saving model to training/training_14676/episode_5_replay_601_(160.44).h5
+[2025-06-03T06:07:01]     Replay 651 (33.22%) had score: 199.82
+[2025-06-03T06:07:01]     Saving model to training/training_14676/episode_5_replay_651_(199.82).h5
+[2025-06-03T06:08:19]     Replay 701 (33.58%) had score: 149.42
+[2025-06-03T06:08:19]     Saving model to training/training_14676/episode_5_replay_701_(149.42).h5
+[2025-06-03T06:09:29]     Replay 751 (33.94%) had score: 117.24
+[2025-06-03T06:09:29]     Saving model to training/training_14676/episode_5_replay_751_(117.24).h5
+[2025-06-03T06:10:30]     Replay 801 (34.29%) had score: 150.30
+[2025-06-03T06:10:30]     Saving model to training/training_14676/episode_5_replay_801_(150.30).h5
+[2025-06-03T06:11:21]     Replay 851 (34.65%) had score: 150.69
+[2025-06-03T06:11:21]     Saving model to training/training_14676/episode_5_replay_851_(150.69).h5
+[2025-06-03T06:12:22]     Replay 901 (35.01%) had score: 98.25
+[2025-06-03T06:12:22]     Saving model to training/training_14676/episode_5_replay_901_(98.25).h5
+[2025-06-03T06:13:17]     Replay 951 (35.36%) had score: 75.28
+[2025-06-03T06:13:17]     Saving model to training/training_14676/episode_5_replay_951_(75.28).h5
+[2025-06-03T06:14:15] Episode #6 (35.72%) starting...
+[2025-06-03T06:14:16]     Replay 1 (35.72%) had score: 98.68
+[2025-06-03T06:14:16]     Saving model to training/training_14676/episode_6_replay_1_(98.68).h5
+[2025-06-03T06:15:58]     Replay 51 (36.08%) had score: 104.33
+[2025-06-03T06:15:58]     Saving model to training/training_14676/episode_6_replay_51_(104.33).h5
+[2025-06-03T06:17:20]     Replay 101 (36.44%) had score: 38.39
+[2025-06-03T06:17:20]     Saving model to training/training_14676/episode_6_replay_101_(38.39).h5
+[2025-06-03T06:18:58]     Replay 151 (36.79%) had score: 37.37
+[2025-06-03T06:18:58]     Saving model to training/training_14676/episode_6_replay_151_(37.37).h5
+[2025-06-03T06:20:43]     Replay 201 (37.15%) had score: 46.07
+[2025-06-03T06:20:43]     Saving model to training/training_14676/episode_6_replay_201_(46.07).h5
+[2025-06-03T06:22:20]     Replay 251 (37.51%) had score: -4.11
+[2025-06-03T06:22:20]     Saving model to training/training_14676/episode_6_replay_251_(-4.11).h5
+[2025-06-03T06:23:46]     Replay 301 (37.86%) had score: -43.72
+[2025-06-03T06:23:46]     Saving model to training/training_14676/episode_6_replay_301_(-43.72).h5
+[2025-06-03T06:25:47]     Replay 351 (38.22%) had score: -133.80
+[2025-06-03T06:25:47]     Saving model to training/training_14676/episode_6_replay_351_(-133.80).h5
+[2025-06-03T06:27:39]     Replay 401 (38.58%) had score: -163.04
+[2025-06-03T06:27:39]     Saving model to training/training_14676/episode_6_replay_401_(-163.04).h5
+[2025-06-03T06:28:52]     Replay 451 (38.94%) had score: -104.21
+[2025-06-03T06:28:52]     Saving model to training/training_14676/episode_6_replay_451_(-104.21).h5
+[2025-06-03T06:30:30]     Replay 501 (39.29%) had score: -88.05
+[2025-06-03T06:30:30]     Saving model to training/training_14676/episode_6_replay_501_(-88.05).h5
+[2025-06-03T06:32:05]     Replay 551 (39.65%) had score: -47.90
+[2025-06-03T06:32:05]     Saving model to training/training_14676/episode_6_replay_551_(-47.90).h5
+[2025-06-03T06:33:07]     Replay 601 (40.01%) had score: 15.06
+[2025-06-03T06:33:07]     Saving model to training/training_14676/episode_6_replay_601_(15.06).h5
+[2025-06-03T06:34:27]     Replay 651 (40.36%) had score: 114.98
+[2025-06-03T06:34:27]     Saving model to training/training_14676/episode_6_replay_651_(114.98).h5
+[2025-06-03T06:35:48]     Replay 701 (40.72%) had score: 146.47
+[2025-06-03T06:35:48]     Saving model to training/training_14676/episode_6_replay_701_(146.47).h5
+[2025-06-03T06:36:42]     Replay 751 (41.08%) had score: -29.02
+[2025-06-03T06:36:42]     Saving model to training/training_14676/episode_6_replay_751_(-29.02).h5
+[2025-06-03T06:37:10]     Replay 801 (41.44%) had score: -159.17
+[2025-06-03T06:37:10]     Saving model to training/training_14676/episode_6_replay_801_(-159.17).h5
+[2025-06-03T06:37:58]     Replay 851 (41.79%) had score: -82.15
+[2025-06-03T06:37:58]     Saving model to training/training_14676/episode_6_replay_851_(-82.15).h5
+[2025-06-03T06:38:34]     Replay 901 (42.15%) had score: 6.17
+[2025-06-03T06:38:34]     Saving model to training/training_14676/episode_6_replay_901_(6.17).h5
+[2025-06-03T06:39:06]     Replay 951 (42.51%) had score: -105.52
+[2025-06-03T06:39:06]     Saving model to training/training_14676/episode_6_replay_951_(-105.52).h5
+[2025-06-03T06:39:50] Episode #7 (42.86%) starting...
+[2025-06-03T06:39:51]     Replay 1 (42.86%) had score: -293.27
+[2025-06-03T06:39:51]     Saving model to training/training_14676/episode_7_replay_1_(-293.27).h5
+[2025-06-03T06:40:49]     Replay 51 (43.22%) had score: -432.09
+[2025-06-03T06:40:49]     Saving model to training/training_14676/episode_7_replay_51_(-432.09).h5
+[2025-06-03T06:41:26]     Replay 101 (43.58%) had score: -529.25
+[2025-06-03T06:41:26]     Saving model to training/training_14676/episode_7_replay_101_(-529.25).h5
+[2025-06-03T06:42:22]     Replay 151 (43.94%) had score: -721.62
+[2025-06-03T06:42:22]     Saving model to training/training_14676/episode_7_replay_151_(-721.62).h5
+[2025-06-03T06:43:14]     Replay 201 (44.29%) had score: -887.02
+[2025-06-03T06:43:14]     Saving model to training/training_14676/episode_7_replay_201_(-887.02).h5
+[2025-06-03T06:44:01]     Replay 251 (44.65%) had score: -898.42
+[2025-06-03T06:44:01]     Saving model to training/training_14676/episode_7_replay_251_(-898.42).h5
+[2025-06-03T06:44:53]     Replay 301 (45.01%) had score: -929.80
+[2025-06-03T06:44:53]     Saving model to training/training_14676/episode_7_replay_301_(-929.80).h5
+[2025-06-03T06:45:47]     Replay 351 (45.36%) had score: -1098.53
+[2025-06-03T06:45:47]     Saving model to training/training_14676/episode_7_replay_351_(-1098.53).h5
+[2025-06-03T06:46:39]     Replay 401 (45.72%) had score: -1264.28
+[2025-06-03T06:46:39]     Saving model to training/training_14676/episode_7_replay_401_(-1264.28).h5
+[2025-06-03T06:47:45]     Replay 451 (46.08%) had score: -1512.76
+[2025-06-03T06:47:45]     Saving model to training/training_14676/episode_7_replay_451_(-1512.76).h5
+[2025-06-03T06:49:02]     Replay 501 (46.44%) had score: -1923.84
+[2025-06-03T06:49:02]     Saving model to training/training_14676/episode_7_replay_501_(-1923.84).h5
+[2025-06-03T06:50:38]     Replay 551 (46.79%) had score: -2567.90
+[2025-06-03T06:50:38]     Saving model to training/training_14676/episode_7_replay_551_(-2567.90).h5
+[2025-06-03T06:52:27]     Replay 601 (47.15%) had score: -2849.42
+[2025-06-03T06:52:27]     Saving model to training/training_14676/episode_7_replay_601_(-2849.42).h5
+[2025-06-03T06:53:57]     Replay 651 (47.51%) had score: -2240.29
+[2025-06-03T06:53:57]     Saving model to training/training_14676/episode_7_replay_651_(-2240.29).h5
+[2025-06-03T06:55:30]     Replay 701 (47.86%) had score: -1937.31
+[2025-06-03T06:55:30]     Saving model to training/training_14676/episode_7_replay_701_(-1937.31).h5
+[2025-06-03T06:57:08]     Replay 751 (48.22%) had score: -2386.41
+[2025-06-03T06:57:08]     Saving model to training/training_14676/episode_7_replay_751_(-2386.41).h5
+[2025-06-03T06:58:54]     Replay 801 (48.58%) had score: -3371.09
+[2025-06-03T06:58:54]     Saving model to training/training_14676/episode_7_replay_801_(-3371.09).h5
+[2025-06-03T07:00:48]     Replay 851 (48.94%) had score: -4837.04
+[2025-06-03T07:00:48]     Saving model to training/training_14676/episode_7_replay_851_(-4837.04).h5
+[2025-06-03T07:02:42]     Replay 901 (49.29%) had score: -6065.59
+[2025-06-03T07:02:42]     Saving model to training/training_14676/episode_7_replay_901_(-6065.59).h5
+[2025-06-03T07:05:00]     Replay 951 (49.65%) had score: -8076.37
+[2025-06-03T07:05:00]     Saving model to training/training_14676/episode_7_replay_951_(-8076.37).h5
+[2025-06-03T07:07:19] Episode #8 (50.01%) starting...
+[2025-06-03T07:07:22]     Replay 1 (50.01%) had score: -8868.39
+[2025-06-03T07:07:22]     Saving model to training/training_14676/episode_8_replay_1_(-8868.39).h5
+[2025-06-03T07:09:57]     Replay 51 (50.36%) had score: -7616.73
+[2025-06-03T07:09:57]     Saving model to training/training_14676/episode_8_replay_51_(-7616.73).h5
+[2025-06-03T07:11:39]     Replay 101 (50.72%) had score: -5710.47
+[2025-06-03T07:11:39]     Saving model to training/training_14676/episode_8_replay_101_(-5710.47).h5
+[2025-06-03T07:12:48]     Replay 151 (51.08%) had score: -3207.26
+[2025-06-03T07:12:48]     Saving model to training/training_14676/episode_8_replay_151_(-3207.26).h5
+[2025-06-03T07:14:00]     Replay 201 (51.44%) had score: -2189.82
+[2025-06-03T07:14:00]     Saving model to training/training_14676/episode_8_replay_201_(-2189.82).h5
+[2025-06-03T07:15:37]     Replay 251 (51.79%) had score: -2437.90
+[2025-06-03T07:15:37]     Saving model to training/training_14676/episode_8_replay_251_(-2437.90).h5
+[2025-06-03T07:16:49]     Replay 301 (52.15%) had score: -2197.63
+[2025-06-03T07:16:49]     Saving model to training/training_14676/episode_8_replay_301_(-2197.63).h5
+[2025-06-03T07:18:03]     Replay 351 (52.51%) had score: -1753.39
+[2025-06-03T07:18:03]     Saving model to training/training_14676/episode_8_replay_351_(-1753.39).h5
+[2025-06-03T07:19:43]     Replay 401 (52.86%) had score: -2045.88
+[2025-06-03T07:19:43]     Saving model to training/training_14676/episode_8_replay_401_(-2045.88).h5
+[2025-06-03T07:21:08]     Replay 451 (53.22%) had score: -2090.98
+[2025-06-03T07:21:08]     Saving model to training/training_14676/episode_8_replay_451_(-2090.98).h5
+[2025-06-03T07:22:54]     Replay 501 (53.58%) had score: -2161.46
+[2025-06-03T07:22:54]     Saving model to training/training_14676/episode_8_replay_501_(-2161.46).h5
+[2025-06-03T07:25:11]     Replay 551 (53.94%) had score: -3210.33
+[2025-06-03T07:25:11]     Saving model to training/training_14676/episode_8_replay_551_(-3210.33).h5
+[2025-06-03T07:27:24]     Replay 601 (54.29%) had score: -4885.08
+[2025-06-03T07:27:24]     Saving model to training/training_14676/episode_8_replay_601_(-4885.08).h5
+[2025-06-03T07:29:31]     Replay 651 (54.65%) had score: -5340.14
+[2025-06-03T07:29:31]     Saving model to training/training_14676/episode_8_replay_651_(-5340.14).h5
+[2025-06-03T07:31:42]     Replay 701 (55.01%) had score: -4481.25
+[2025-06-03T07:31:42]     Saving model to training/training_14676/episode_8_replay_701_(-4481.25).h5
+[2025-06-03T07:32:42]     Replay 751 (55.36%) had score: -2525.45
+[2025-06-03T07:32:42]     Saving model to training/training_14676/episode_8_replay_751_(-2525.45).h5
+[2025-06-03T07:34:05]     Replay 801 (55.72%) had score: -1121.59
+[2025-06-03T07:34:05]     Saving model to training/training_14676/episode_8_replay_801_(-1121.59).h5
+[2025-06-03T07:34:59]     Replay 851 (56.08%) had score: -1072.58
+[2025-06-03T07:34:59]     Saving model to training/training_14676/episode_8_replay_851_(-1072.58).h5
+[2025-06-03T07:35:36]     Replay 901 (56.44%) had score: -572.59
+[2025-06-03T07:35:36]     Saving model to training/training_14676/episode_8_replay_901_(-572.59).h5
+[2025-06-03T07:35:59]     Replay 951 (56.79%) had score: -320.79
+[2025-06-03T07:35:59]     Saving model to training/training_14676/episode_8_replay_951_(-320.79).h5
+[2025-06-03T07:36:17] Episode #9 (57.15%) starting...
+[2025-06-03T07:36:17]     Replay 1 (57.15%) had score: -364.66
+[2025-06-03T07:36:17]     Saving model to training/training_14676/episode_9_replay_1_(-364.66).h5
+[2025-06-03T07:36:35]     Replay 51 (57.51%) had score: -398.32
+[2025-06-03T07:36:35]     Saving model to training/training_14676/episode_9_replay_51_(-398.32).h5
+[2025-06-03T07:36:53]     Replay 101 (57.86%) had score: -417.35
+[2025-06-03T07:36:53]     Saving model to training/training_14676/episode_9_replay_101_(-417.35).h5
+[2025-06-03T07:37:12]     Replay 151 (58.22%) had score: -376.81
+[2025-06-03T07:37:12]     Saving model to training/training_14676/episode_9_replay_151_(-376.81).h5
+[2025-06-03T07:37:31]     Replay 201 (58.58%) had score: -332.96
+[2025-06-03T07:37:31]     Saving model to training/training_14676/episode_9_replay_201_(-332.96).h5
+[2025-06-03T07:37:50]     Replay 251 (58.94%) had score: -329.68
+[2025-06-03T07:37:50]     Saving model to training/training_14676/episode_9_replay_251_(-329.68).h5
+[2025-06-03T07:38:14]     Replay 301 (59.29%) had score: -330.02
+[2025-06-03T07:38:14]     Saving model to training/training_14676/episode_9_replay_301_(-330.02).h5
+[2025-06-03T07:38:41]     Replay 351 (59.65%) had score: -333.95
+[2025-06-03T07:38:41]     Saving model to training/training_14676/episode_9_replay_351_(-333.95).h5
+[2025-06-03T07:39:10]     Replay 401 (60.01%) had score: -318.48
+[2025-06-03T07:39:10]     Saving model to training/training_14676/episode_9_replay_401_(-318.48).h5
+[2025-06-03T07:39:40]     Replay 451 (60.36%) had score: -284.73
+[2025-06-03T07:39:40]     Saving model to training/training_14676/episode_9_replay_451_(-284.73).h5
+[2025-06-03T07:40:13]     Replay 501 (60.72%) had score: -249.67
+[2025-06-03T07:40:13]     Saving model to training/training_14676/episode_9_replay_501_(-249.67).h5
+[2025-06-03T07:40:50]     Replay 551 (61.08%) had score: -226.16
+[2025-06-03T07:40:50]     Saving model to training/training_14676/episode_9_replay_551_(-226.16).h5
+[2025-06-03T07:41:36]     Replay 601 (61.44%) had score: -231.43
+[2025-06-03T07:41:36]     Saving model to training/training_14676/episode_9_replay_601_(-231.43).h5
+[2025-06-03T07:42:35]     Replay 651 (61.79%) had score: -256.91
+[2025-06-03T07:42:35]     Saving model to training/training_14676/episode_9_replay_651_(-256.91).h5
+[2025-06-03T07:44:21]     Replay 701 (62.15%) had score: -292.75
+[2025-06-03T07:44:21]     Saving model to training/training_14676/episode_9_replay_701_(-292.75).h5
+[2025-06-03T07:45:48]     Replay 751 (62.51%) had score: -549.34
+[2025-06-03T07:45:48]     Saving model to training/training_14676/episode_9_replay_751_(-549.34).h5
+[2025-06-03T07:46:31]     Replay 801 (62.86%) had score: -634.11
+[2025-06-03T07:46:31]     Saving model to training/training_14676/episode_9_replay_801_(-634.11).h5
+[2025-06-03T07:47:45]     Replay 851 (63.22%) had score: -469.18
+[2025-06-03T07:47:45]     Saving model to training/training_14676/episode_9_replay_851_(-469.18).h5
+[2025-06-03T07:48:38]     Replay 901 (63.58%) had score: -428.28
+[2025-06-03T07:48:38]     Saving model to training/training_14676/episode_9_replay_901_(-428.28).h5
+[2025-06-03T07:49:15]     Replay 951 (63.94%) had score: -381.79
+[2025-06-03T07:49:15]     Saving model to training/training_14676/episode_9_replay_951_(-381.79).h5
+[2025-06-03T07:50:17] Episode #10 (64.29%) starting...
+[2025-06-03T07:50:18]     Replay 1 (64.29%) had score: -451.69
+[2025-06-03T07:50:18]     Saving model to training/training_14676/episode_10_replay_1_(-451.69).h5
+[2025-06-03T07:51:40]     Replay 51 (64.65%) had score: -608.09
+[2025-06-03T07:51:40]     Saving model to training/training_14676/episode_10_replay_51_(-608.09).h5
+[2025-06-03T07:53:15]     Replay 101 (65.01%) had score: -686.24
+[2025-06-03T07:53:15]     Saving model to training/training_14676/episode_10_replay_101_(-686.24).h5
+[2025-06-03T07:54:56]     Replay 151 (65.36%) had score: -700.32
+[2025-06-03T07:54:56]     Saving model to training/training_14676/episode_10_replay_151_(-700.32).h5
+[2025-06-03T07:56:42]     Replay 201 (65.72%) had score: -674.75
+[2025-06-03T07:56:42]     Saving model to training/training_14676/episode_10_replay_201_(-674.75).h5
+[2025-06-03T07:58:46]     Replay 251 (66.08%) had score: -663.94
+[2025-06-03T07:58:46]     Saving model to training/training_14676/episode_10_replay_251_(-663.94).h5
+[2025-06-03T08:01:05]     Replay 301 (66.44%) had score: -593.42
+[2025-06-03T08:01:05]     Saving model to training/training_14676/episode_10_replay_301_(-593.42).h5
+[2025-06-03T08:03:32]     Replay 351 (66.79%) had score: -519.03
+[2025-06-03T08:03:32]     Saving model to training/training_14676/episode_10_replay_351_(-519.03).h5
+[2025-06-03T08:05:50]     Replay 401 (67.15%) had score: -496.92
+[2025-06-03T08:05:50]     Saving model to training/training_14676/episode_10_replay_401_(-496.92).h5
+[2025-06-03T08:07:20]     Replay 451 (67.51%) had score: -386.89
+[2025-06-03T08:07:20]     Saving model to training/training_14676/episode_10_replay_451_(-386.89).h5
+[2025-06-03T08:08:56]     Replay 501 (67.86%) had score: -250.01
+[2025-06-03T08:08:56]     Saving model to training/training_14676/episode_10_replay_501_(-250.01).h5
+[2025-06-03T08:11:05]     Replay 551 (68.22%) had score: -259.52
+[2025-06-03T08:11:05]     Saving model to training/training_14676/episode_10_replay_551_(-259.52).h5
+[2025-06-03T08:13:17]     Replay 601 (68.58%) had score: -376.58
+[2025-06-03T08:13:17]     Saving model to training/training_14676/episode_10_replay_601_(-376.58).h5
+[2025-06-03T08:14:57]     Replay 651 (68.94%) had score: -452.16
+[2025-06-03T08:14:57]     Saving model to training/training_14676/episode_10_replay_651_(-452.16).h5
+[2025-06-03T08:16:44]     Replay 701 (69.29%) had score: -541.38
+[2025-06-03T08:16:44]     Saving model to training/training_14676/episode_10_replay_701_(-541.38).h5
+[2025-06-03T08:18:20]     Replay 751 (69.65%) had score: -554.27
+[2025-06-03T08:18:20]     Saving model to training/training_14676/episode_10_replay_751_(-554.27).h5
+[2025-06-03T08:19:14]     Replay 801 (70.01%) had score: -524.51
+[2025-06-03T08:19:14]     Saving model to training/training_14676/episode_10_replay_801_(-524.51).h5
+[2025-06-03T08:20:00]     Replay 851 (70.36%) had score: -484.37
+[2025-06-03T08:20:00]     Saving model to training/training_14676/episode_10_replay_851_(-484.37).h5
+[2025-06-03T08:21:01]     Replay 901 (70.72%) had score: -446.67
+[2025-06-03T08:21:01]     Saving model to training/training_14676/episode_10_replay_901_(-446.67).h5
+[2025-06-03T08:22:08]     Replay 951 (71.08%) had score: -482.27
+[2025-06-03T08:22:08]     Saving model to training/training_14676/episode_10_replay_951_(-482.27).h5
+[2025-06-03T08:23:18] Episode #11 (71.44%) starting...
+[2025-06-03T08:23:21]     Replay 1 (71.44%) had score: -505.91
+[2025-06-03T08:23:21]     Saving model to training/training_14676/episode_11_replay_1_(-505.91).h5
+[2025-06-03T08:24:36]     Replay 51 (71.79%) had score: -480.76
+[2025-06-03T08:24:36]     Saving model to training/training_14676/episode_11_replay_51_(-480.76).h5
+[2025-06-03T08:25:39]     Replay 101 (72.15%) had score: -434.56
+[2025-06-03T08:25:39]     Saving model to training/training_14676/episode_11_replay_101_(-434.56).h5
+[2025-06-03T08:26:30]     Replay 151 (72.51%) had score: -395.44
+[2025-06-03T08:26:30]     Saving model to training/training_14676/episode_11_replay_151_(-395.44).h5
+[2025-06-03T08:27:17]     Replay 201 (72.86%) had score: -376.22
+[2025-06-03T08:27:17]     Saving model to training/training_14676/episode_11_replay_201_(-376.22).h5
+[2025-06-03T08:27:56]     Replay 251 (73.22%) had score: -368.78
+[2025-06-03T08:27:56]     Saving model to training/training_14676/episode_11_replay_251_(-368.78).h5
+[2025-06-03T08:28:29]     Replay 301 (73.58%) had score: -341.20
+[2025-06-03T08:28:29]     Saving model to training/training_14676/episode_11_replay_301_(-341.20).h5
+[2025-06-03T08:29:02]     Replay 351 (73.94%) had score: -329.94
+[2025-06-03T08:29:02]     Saving model to training/training_14676/episode_11_replay_351_(-329.94).h5
+[2025-06-03T08:29:44]     Replay 401 (74.29%) had score: -331.29
+[2025-06-03T08:29:44]     Saving model to training/training_14676/episode_11_replay_401_(-331.29).h5
+[2025-06-03T08:30:57]     Replay 451 (74.65%) had score: -344.35
+[2025-06-03T08:30:57]     Saving model to training/training_14676/episode_11_replay_451_(-344.35).h5
+[2025-06-03T08:32:15]     Replay 501 (75.01%) had score: -370.15
+[2025-06-03T08:32:15]     Saving model to training/training_14676/episode_11_replay_501_(-370.15).h5
+[2025-06-03T08:33:40]     Replay 551 (75.36%) had score: -361.56
+[2025-06-03T08:33:40]     Saving model to training/training_14676/episode_11_replay_551_(-361.56).h5
+[2025-06-03T08:34:35]     Replay 601 (75.72%) had score: -391.13
+[2025-06-03T08:34:35]     Saving model to training/training_14676/episode_11_replay_601_(-391.13).h5
+[2025-06-03T08:35:21]     Replay 651 (76.08%) had score: -413.99
+[2025-06-03T08:35:21]     Saving model to training/training_14676/episode_11_replay_651_(-413.99).h5
+[2025-06-03T08:36:15]     Replay 701 (76.44%) had score: -363.09
+[2025-06-03T08:36:15]     Saving model to training/training_14676/episode_11_replay_701_(-363.09).h5
+[2025-06-03T08:37:15]     Replay 751 (76.79%) had score: -292.44
+[2025-06-03T08:37:15]     Saving model to training/training_14676/episode_11_replay_751_(-292.44).h5
+[2025-06-03T08:38:14]     Replay 801 (77.15%) had score: -256.88
+[2025-06-03T08:38:14]     Saving model to training/training_14676/episode_11_replay_801_(-256.88).h5
+[2025-06-03T08:39:22]     Replay 851 (77.51%) had score: -263.84
+[2025-06-03T08:39:22]     Saving model to training/training_14676/episode_11_replay_851_(-263.84).h5
+[2025-06-03T08:40:38]     Replay 901 (77.86%) had score: -266.65
+[2025-06-03T08:40:38]     Saving model to training/training_14676/episode_11_replay_901_(-266.65).h5
+[2025-06-03T08:42:11]     Replay 951 (78.22%) had score: -263.42
+[2025-06-03T08:42:11]     Saving model to training/training_14676/episode_11_replay_951_(-263.42).h5
+[2025-06-03T08:44:23] Episode #12 (78.58%) starting...
+[2025-06-03T08:44:23]     Replay 1 (78.58%) had score: -208.86
+[2025-06-03T08:44:23]     Saving model to training/training_14676/episode_12_replay_1_(-208.86).h5
+[2025-06-03T08:45:34]     Replay 51 (78.94%) had score: -184.72
+[2025-06-03T08:45:34]     Saving model to training/training_14676/episode_12_replay_51_(-184.72).h5
+[2025-06-03T08:46:25]     Replay 101 (79.29%) had score: -215.12
+[2025-06-03T08:46:25]     Saving model to training/training_14676/episode_12_replay_101_(-215.12).h5
+[2025-06-03T08:47:03]     Replay 151 (79.65%) had score: -234.50
+[2025-06-03T08:47:03]     Saving model to training/training_14676/episode_12_replay_151_(-234.50).h5
+[2025-06-03T08:47:44]     Replay 201 (80.01%) had score: -232.53
+[2025-06-03T08:47:44]     Saving model to training/training_14676/episode_12_replay_201_(-232.53).h5
+[2025-06-03T08:48:40]     Replay 251 (80.36%) had score: -198.42
+[2025-06-03T08:48:40]     Saving model to training/training_14676/episode_12_replay_251_(-198.42).h5
+[2025-06-03T08:50:34]     Replay 301 (80.72%) had score: -160.11
+[2025-06-03T08:50:34]     Saving model to training/training_14676/episode_12_replay_301_(-160.11).h5
+[2025-06-03T08:52:35]     Replay 351 (81.08%) had score: -159.50
+[2025-06-03T08:52:35]     Saving model to training/training_14676/episode_12_replay_351_(-159.50).h5
+[2025-06-03T08:54:21]     Replay 401 (81.44%) had score: -181.29
+[2025-06-03T08:54:21]     Saving model to training/training_14676/episode_12_replay_401_(-181.29).h5
+[2025-06-03T08:56:38]     Replay 451 (81.79%) had score: -211.95
+[2025-06-03T08:56:38]     Saving model to training/training_14676/episode_12_replay_451_(-211.95).h5
+[2025-06-03T08:58:43]     Replay 501 (82.15%) had score: -234.32
+[2025-06-03T08:58:43]     Saving model to training/training_14676/episode_12_replay_501_(-234.32).h5
+[2025-06-03T09:00:55]     Replay 551 (82.51%) had score: -242.56
+[2025-06-03T09:00:55]     Saving model to training/training_14676/episode_12_replay_551_(-242.56).h5
+[2025-06-03T09:03:46]     Replay 601 (82.86%) had score: -230.86
+[2025-06-03T09:03:46]     Saving model to training/training_14676/episode_12_replay_601_(-230.86).h5
+[2025-06-03T09:06:43]     Replay 651 (83.22%) had score: -193.42
+[2025-06-03T09:06:43]     Saving model to training/training_14676/episode_12_replay_651_(-193.42).h5
+[2025-06-03T09:09:16]     Replay 701 (83.58%) had score: -164.86
+[2025-06-03T09:09:16]     Saving model to training/training_14676/episode_12_replay_701_(-164.86).h5
+[2025-06-03T09:10:45]     Replay 751 (83.94%) had score: -174.28
+[2025-06-03T09:10:45]     Saving model to training/training_14676/episode_12_replay_751_(-174.28).h5
+[2025-06-03T09:12:12]     Replay 801 (84.29%) had score: -197.36
+[2025-06-03T09:12:12]     Saving model to training/training_14676/episode_12_replay_801_(-197.36).h5
+[2025-06-03T09:13:57]     Replay 851 (84.65%) had score: -229.88
+[2025-06-03T09:13:57]     Saving model to training/training_14676/episode_12_replay_851_(-229.88).h5
+[2025-06-03T09:15:58]     Replay 901 (85.01%) had score: -266.06
+[2025-06-03T09:15:58]     Saving model to training/training_14676/episode_12_replay_901_(-266.06).h5
+[2025-06-03T09:18:39]     Replay 951 (85.36%) had score: -322.95
+[2025-06-03T09:18:39]     Saving model to training/training_14676/episode_12_replay_951_(-322.95).h5
+[2025-06-03T09:20:37] Episode #13 (85.72%) starting...
+[2025-06-03T09:20:41]     Replay 1 (85.72%) had score: -313.17
+[2025-06-03T09:20:41]     Saving model to training/training_14676/episode_13_replay_1_(-313.17).h5
+[2025-06-03T09:23:10]     Replay 51 (86.08%) had score: -211.45
+[2025-06-03T09:23:10]     Saving model to training/training_14676/episode_13_replay_51_(-211.45).h5
+[2025-06-03T09:25:33]     Replay 101 (86.44%) had score: -180.66
+[2025-06-03T09:25:33]     Saving model to training/training_14676/episode_13_replay_101_(-180.66).h5
+[2025-06-03T09:27:51]     Replay 151 (86.79%) had score: -179.57
+[2025-06-03T09:27:51]     Saving model to training/training_14676/episode_13_replay_151_(-179.57).h5
+[2025-06-03T09:29:42]     Replay 201 (87.15%) had score: -202.20
+[2025-06-03T09:29:42]     Saving model to training/training_14676/episode_13_replay_201_(-202.20).h5
+[2025-06-03T09:31:30]     Replay 251 (87.51%) had score: -209.26
+[2025-06-03T09:31:30]     Saving model to training/training_14676/episode_13_replay_251_(-209.26).h5
+[2025-06-03T09:34:11]     Replay 301 (87.86%) had score: -152.47
+[2025-06-03T09:34:11]     Saving model to training/training_14676/episode_13_replay_301_(-152.47).h5
+[2025-06-03T09:37:43]     Replay 351 (88.22%) had score: -93.79
+[2025-06-03T09:37:43]     Saving model to training/training_14676/episode_13_replay_351_(-93.79).h5
+[2025-06-03T09:40:57]     Replay 401 (88.58%) had score: -73.82
+[2025-06-03T09:40:57]     Saving model to training/training_14676/episode_13_replay_401_(-73.82).h5
+[2025-06-03T09:44:11]     Replay 451 (88.94%) had score: -94.80
+[2025-06-03T09:44:11]     Saving model to training/training_14676/episode_13_replay_451_(-94.80).h5
+[2025-06-03T09:46:39]     Replay 501 (89.29%) had score: -135.68
+[2025-06-03T09:46:39]     Saving model to training/training_14676/episode_13_replay_501_(-135.68).h5
+[2025-06-03T09:48:53]     Replay 551 (89.65%) had score: -171.72
+[2025-06-03T09:48:53]     Saving model to training/training_14676/episode_13_replay_551_(-171.72).h5
+[2025-06-03T09:51:40]     Replay 601 (90.01%) had score: -143.16
+[2025-06-03T09:51:40]     Saving model to training/training_14676/episode_13_replay_601_(-143.16).h5
+[2025-06-03T09:54:49]     Replay 651 (90.36%) had score: -85.14
+[2025-06-03T09:54:49]     Saving model to training/training_14676/episode_13_replay_651_(-85.14).h5
+[2025-06-03T09:57:27]     Replay 701 (90.72%) had score: -68.73
+[2025-06-03T09:57:27]     Saving model to training/training_14676/episode_13_replay_701_(-68.73).h5
+[2025-06-03T09:59:24]     Replay 751 (91.08%) had score: -114.02
+[2025-06-03T09:59:24]     Saving model to training/training_14676/episode_13_replay_751_(-114.02).h5
+[2025-06-03T10:01:05]     Replay 801 (91.44%) had score: -141.02
+[2025-06-03T10:01:05]     Saving model to training/training_14676/episode_13_replay_801_(-141.02).h5
+[2025-06-03T10:03:19]     Replay 851 (91.79%) had score: -186.68
+[2025-06-03T10:03:19]     Saving model to training/training_14676/episode_13_replay_851_(-186.68).h5
+[2025-06-03T10:05:12]     Replay 901 (92.15%) had score: -266.88
+[2025-06-03T10:05:12]     Saving model to training/training_14676/episode_13_replay_901_(-266.88).h5
+[2025-06-03T10:06:34]     Replay 951 (92.51%) had score: -296.53
+[2025-06-03T10:06:34]     Saving model to training/training_14676/episode_13_replay_951_(-296.53).h5
+[2025-06-03T10:08:24] Episode #14 (92.86%) starting...
+[2025-06-03T10:08:25]     Replay 1 (92.86%) had score: -273.75
+[2025-06-03T10:08:25]     Saving model to training/training_14676/episode_14_replay_1_(-273.75).h5
+[2025-06-03T10:10:34]     Replay 51 (93.22%) had score: -208.00
+[2025-06-03T10:10:34]     Saving model to training/training_14676/episode_14_replay_51_(-208.00).h5
+[2025-06-03T10:12:50]     Replay 101 (93.58%) had score: -163.12
+[2025-06-03T10:12:50]     Saving model to training/training_14676/episode_14_replay_101_(-163.12).h5
+[2025-06-03T10:14:19]     Replay 151 (93.94%) had score: -162.62
+[2025-06-03T10:14:19]     Saving model to training/training_14676/episode_14_replay_151_(-162.62).h5
+[2025-06-03T10:16:09]     Replay 201 (94.29%) had score: -130.64
+[2025-06-03T10:16:09]     Saving model to training/training_14676/episode_14_replay_201_(-130.64).h5
+[2025-06-03T10:17:54]     Replay 251 (94.65%) had score: -29.90
+[2025-06-03T10:17:54]     Saving model to training/training_14676/episode_14_replay_251_(-29.90).h5
+[2025-06-03T10:19:25]     Replay 301 (95.01%) had score: 31.83
+[2025-06-03T10:19:25]     Saving model to training/training_14676/episode_14_replay_301_(31.83).h5
+[2025-06-03T10:21:53]     Replay 351 (95.36%) had score: 24.00
+[2025-06-03T10:21:53]     Saving model to training/training_14676/episode_14_replay_351_(24.00).h5
+[2025-06-03T10:24:26]     Replay 401 (95.72%) had score: 38.54
+[2025-06-03T10:24:26]     Saving model to training/training_14676/episode_14_replay_401_(38.54).h5
+[2025-06-03T10:26:55]     Replay 451 (96.08%) had score: -3.72
+[2025-06-03T10:26:55]     Saving model to training/training_14676/episode_14_replay_451_(-3.72).h5
+[2025-06-03T10:29:50]     Replay 501 (96.44%) had score: -68.40
+[2025-06-03T10:29:50]     Saving model to training/training_14676/episode_14_replay_501_(-68.40).h5
+[2025-06-03T10:32:54]     Replay 551 (96.79%) had score: -83.63
+[2025-06-03T10:32:54]     Saving model to training/training_14676/episode_14_replay_551_(-83.63).h5
+[2025-06-03T10:35:27]     Replay 601 (97.15%) had score: -39.34
+[2025-06-03T10:35:27]     Saving model to training/training_14676/episode_14_replay_601_(-39.34).h5
+[2025-06-03T10:38:32]     Replay 651 (97.51%) had score: 27.80
+[2025-06-03T10:38:32]     Saving model to training/training_14676/episode_14_replay_651_(27.80).h5
+[2025-06-03T10:40:42]     Replay 701 (97.86%) had score: 90.63
+[2025-06-03T10:40:42]     Saving model to training/training_14676/episode_14_replay_701_(90.63).h5
+[2025-06-03T10:42:06]     Replay 751 (98.22%) had score: 112.08
+[2025-06-03T10:42:06]     Saving model to training/training_14676/episode_14_replay_751_(112.08).h5
+[2025-06-03T10:43:28]     Replay 801 (98.58%) had score: 111.93
+[2025-06-03T10:43:28]     Saving model to training/training_14676/episode_14_replay_801_(111.93).h5
+[2025-06-03T10:44:52]     Replay 851 (98.94%) had score: 139.26
+[2025-06-03T10:44:52]     Saving model to training/training_14676/episode_14_replay_851_(139.26).h5
+[2025-06-03T10:46:22]     Replay 901 (99.29%) had score: 140.90
+[2025-06-03T10:46:22]     Saving model to training/training_14676/episode_14_replay_901_(140.90).h5
+[2025-06-03T10:47:51]     Replay 951 (99.65%) had score: 152.70
+[2025-06-03T10:47:51]     Saving model to training/training_14676/episode_14_replay_951_(152.70).h5
+[2025-06-03T10:49:06] Saving scores, averaged scores and epsilons to files...

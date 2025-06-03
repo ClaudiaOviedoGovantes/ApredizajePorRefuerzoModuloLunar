@@ -63,7 +63,7 @@ class ReplayBuffer():
         rewards = self.reward_buffer[choices]
         next_states = self.next_state_buffer[choices]
         dones = self.done_buffer[choices]
-        return choices, states, actions, rewards, next_states, dones
+        return states, actions, rewards, next_states, dones
     
     def __len__(self):
         return self.len
@@ -250,7 +250,7 @@ class DQNAgent():
 
         self.update_target_network()
     
-    def train(self, save_path="modelo_DQN.h5", score_window_size=100, backup_interval=50):
+    def train(self, save_path="modelo_DQN.h5", score_window_size=50, backup_interval=50):
         """
         Train the DQN agent on the given environment for a specified number of episodes.
         The agent will interact with the environment, store experiences in memory, and learn from them.
@@ -311,42 +311,40 @@ class DQNAgent():
             scores = []
             averaged_scores = []
             epsilons = []
-            total_replays = 0
+            steps = 0
 
             for episode in range(0, self.episodes):
-                log(f"Episode #{episode+1} ({100*(total_replays+1)/self.episodes/self.replays_per_episode:.2f}%) starting...")
 
-                for replay in range(0, self.replays_per_episode):
-                    self.lunar.reset()
+                self.lunar.reset()
 
-                    score = 0
+                score = 0
 
-                    done = False
-                    while not done:
-                        _next_state, reward, done, _action = self.act()
-                        score += reward
+                done = False
+                while not done:
+                    _next_state, reward, done, _action = self.act()
+                    score += reward
+                    steps += 1
+
+                    if (steps % self.target_updt_freq == 0):
+                        self.update_model()
+                        self.update_target_network()
                     
                     self.epsilon = max(self.epsilon * self.epsilon_decay, self.epsilon_min)
 
-                    score = self.perform_replay() 
+                epsilons.append(self.epsilon)
+                score_buffer.append(score)
+                scores.append(score)
+                
+                if (episode % backup_interval == 0):
+                    average_score = np.mean(score_buffer)
+                    averaged_scores.append(average_score)
 
-                    epsilons.append(self.epsilon)
-                    score_buffer.append(score)
-                    scores.append(score)
-
-                    if (total_replays % self.target_updt_freq == 0):
-                        self.update_model()
-                        self.update_target_network()
-                    if (total_replays % backup_interval == 0):
-                        average_score = np.mean(score_buffer)
-                        averaged_scores.append(average_score)
-
-                        log(f"    Replay {replay+1} ({100*(total_replays+1)/self.episodes/self.replays_per_episode:.2f}%) had score: {average_score:.2f}")
-                        backup_path = f"{path}/episode_{episode+1}_replay_{replay+1}_({average_score:.2f}).h5"
-                        log(f"    Saving model to {backup_path}")
-                        self.save_model(backup_path)
-                    
-                    total_replays += 1
+                    percentage = 100*(episode+1)/self.episodes
+                    log(f"Episode {episode+1} ({percentage:.2f}%) had score: {average_score:.2f}")
+                    backup_path = f"{path}/episode_{episode+1}_({average_score:.2f}).h5"
+                    log(f"    Saving model to {backup_path}")
+                    self.save_model(backup_path)
+                
                 
             log("Saving scores, averaged scores and epsilons to files...")
 
@@ -361,8 +359,8 @@ class DQNAgent():
                 f.write("episode,average_score\n")
                 for i, average_score in enumerate(averaged_scores):
                     f.write(f"{i*backup_interval+1},{average_score}\n")
-                if((total_replays-1)%backup_interval != 0):
-                    f.write(f"{total_replays-1},{np.mean(score_buffer)}\n")
+                if((steps-1)%backup_interval != 0):
+                    f.write(f"{steps-1},{np.mean(score_buffer)}\n")
             with open(epsilons_path, "w") as f:
                 f.write("episode,epsilon\n")
                 for i, epsilon in enumerate(epsilons):

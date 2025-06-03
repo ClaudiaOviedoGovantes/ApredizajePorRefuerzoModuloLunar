@@ -1,0 +1,72 @@
+[2025-06-03T18:44:09] Training DQN agent with parameters:
+  - gamma: 0.99
+  - epsilon: 1.0
+  - epsilon_decay: 0.995
+  - epsilon_min: 0.01
+  - learning_rate: 0.001
+  - batch_size: 64
+  - episodes: 1500
+  - target_network_update_freq: 10
+  - replays_per_episode: 1000
+
+[2025-06-03T18:44:09] Episode 1 (0.07%) had score: -374.93
+[2025-06-03T18:44:09]     Saving model to training/training_597039/episode_1_(-374.93).h5
+[2025-06-03T18:44:17] Episode 51 (3.40%) had score: -187.37
+[2025-06-03T18:44:17]     Saving model to training/training_597039/episode_51_(-187.37).h5
+[2025-06-03T18:44:52] Episode 101 (6.73%) had score: -114.83
+[2025-06-03T18:44:52]     Saving model to training/training_597039/episode_101_(-114.83).h5
+[2025-06-03T18:45:37] Episode 151 (10.07%) had score: -157.36
+[2025-06-03T18:45:37]     Saving model to training/training_597039/episode_151_(-157.36).h5
+[2025-06-03T18:46:28] Episode 201 (13.40%) had score: -147.07
+[2025-06-03T18:46:28]     Saving model to training/training_597039/episode_201_(-147.07).h5
+[2025-06-03T18:47:10] Episode 251 (16.73%) had score: -138.45
+[2025-06-03T18:47:10]     Saving model to training/training_597039/episode_251_(-138.45).h5
+[2025-06-03T18:47:59] Episode 301 (20.07%) had score: -173.66
+[2025-06-03T18:47:59]     Saving model to training/training_597039/episode_301_(-173.66).h5
+[2025-06-03T18:48:47] Episode 351 (23.40%) had score: -204.39
+[2025-06-03T18:48:47]     Saving model to training/training_597039/episode_351_(-204.39).h5
+[2025-06-03T18:49:31] Episode 401 (26.73%) had score: -108.51
+[2025-06-03T18:49:31]     Saving model to training/training_597039/episode_401_(-108.51).h5
+[2025-06-03T18:50:10] Episode 451 (30.07%) had score: -112.92
+[2025-06-03T18:50:10]     Saving model to training/training_597039/episode_451_(-112.92).h5
+[2025-06-03T18:50:57] Episode 501 (33.40%) had score: -111.03
+[2025-06-03T18:50:57]     Saving model to training/training_597039/episode_501_(-111.03).h5
+[2025-06-03T18:51:48] Episode 551 (36.73%) had score: -117.52
+[2025-06-03T18:51:48]     Saving model to training/training_597039/episode_551_(-117.52).h5
+[2025-06-03T18:52:41] Episode 601 (40.07%) had score: -81.10
+[2025-06-03T18:52:41]     Saving model to training/training_597039/episode_601_(-81.10).h5
+[2025-06-03T18:53:33] Episode 651 (43.40%) had score: -67.61
+[2025-06-03T18:53:33]     Saving model to training/training_597039/episode_651_(-67.61).h5
+[2025-06-03T18:54:21] Episode 701 (46.73%) had score: -72.17
+[2025-06-03T18:54:21]     Saving model to training/training_597039/episode_701_(-72.17).h5
+[2025-06-03T18:55:10] Episode 751 (50.07%) had score: -60.58
+[2025-06-03T18:55:10]     Saving model to training/training_597039/episode_751_(-60.58).h5
+[2025-06-03T18:55:48] Episode 801 (53.40%) had score: 62.00
+[2025-06-03T18:55:48]     Saving model to training/training_597039/episode_801_(62.00).h5
+[2025-06-03T18:56:13] Episode 851 (56.73%) had score: 141.59
+[2025-06-03T18:56:13]     Saving model to training/training_597039/episode_851_(141.59).h5
+[2025-06-03T18:56:49] Episode 901 (60.07%) had score: 86.37
+[2025-06-03T18:56:49]     Saving model to training/training_597039/episode_901_(86.37).h5
+[2025-06-03T18:57:28] Episode 951 (63.40%) had score: 51.06
+[2025-06-03T18:57:28]     Saving model to training/training_597039/episode_951_(51.06).h5
+[2025-06-03T18:58:05] Episode 1001 (66.73%) had score: 104.67
+[2025-06-03T18:58:05]     Saving model to training/training_597039/episode_1001_(104.67).h5
+[2025-06-03T18:58:32] Episode 1051 (70.07%) had score: 150.51
+[2025-06-03T18:58:32]     Saving model to training/training_597039/episode_1051_(150.51).h5
+[2025-06-03T18:59:04] Episode 1101 (73.40%) had score: 124.53
+[2025-06-03T18:59:04]     Saving model to training/training_597039/episode_1101_(124.53).h5
+[2025-06-03T18:59:33] Episode 1151 (76.73%) had score: 160.26
+[2025-06-03T18:59:33]     Saving model to training/training_597039/episode_1151_(160.26).h5
+[2025-06-03T19:00:03] Episode 1201 (80.07%) had score: 145.98
+[2025-06-03T19:00:03]     Saving model to training/training_597039/episode_1201_(145.98).h5
+[2025-06-03T19:00:33] Episode 1251 (83.40%) had score: 197.61
+[2025-06-03T19:00:33]     Saving model to training/training_597039/episode_1251_(197.61).h5
+[2025-06-03T19:00:52] Episode 1301 (86.73%) had score: 206.76
+[2025-06-03T19:00:52]     Saving model to training/training_597039/episode_1301_(206.76).h5
+[2025-06-03T19:01:14] Episode 1351 (90.07%) had score: 170.28
+[2025-06-03T19:01:14]     Saving model to training/training_597039/episode_1351_(170.28).h5
+[2025-06-03T19:01:34] Episode 1401 (93.40%) had score: 238.90
+[2025-06-03T19:01:34]     Saving model to training/training_597039/episode_1401_(238.90).h5
+[2025-06-03T19:01:50] Episode 1451 (96.73%) had score: 245.40
+[2025-06-03T19:01:50]     Saving model to training/training_597039/episode_1451_(245.40).h5
+[2025-06-03T19:02:07] Saving scores, averaged scores and epsilons to files...

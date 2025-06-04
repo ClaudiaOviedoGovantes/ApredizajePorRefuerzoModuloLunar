@@ -284,7 +284,7 @@ class DQNAgent():
         path = f"training/training_{training_code}"
         os.makedirs(path)
         
-        with open(f"{path}/log.txt", "a+") as f:
+        with open(f"{path}/log.txt", "a+") as log_file:
             def log(message):
                 """
                 Log a message to the console and to a file.
@@ -292,7 +292,7 @@ class DQNAgent():
                 timestamp = np.datetime64('now', 's')
                 message = f"[{timestamp}] {message}"
                 print(message)
-                f.write(message + "\n")
+                log_file.write(message + "\n")
             
             log(
                 f"Training DQN agent with parameters:\n"
@@ -326,7 +326,7 @@ class DQNAgent():
                     steps += 1
 
                     if (steps % self.target_updt_freq == 0):
-                        self.update_model()
+                        self.update_model(episode=episode)
                         self.update_target_network()
                     
                     self.epsilon = max(self.epsilon * self.epsilon_decay, self.epsilon_min)
@@ -351,20 +351,27 @@ class DQNAgent():
             scores_path = f"{path}/summary_scores.csv"
             averaged_scores_path = f"{path}/summary_averaged_scores.csv"
             epsilons_path = f"{path}/summary_epsilons.csv"
-            with open(scores_path, "w") as f:
-                f.write("episode,score\n")
+
+            with open(scores_path, "w") as scores_file:
+                scores_file.write("episode,score\n")
+
                 for i, score in enumerate(scores):
-                    f.write(f"{i+1},{score}\n")
-            with open(averaged_scores_path, "w") as f:
-                f.write("episode,average_score\n")
+                    scores_file.write(f"{i+1},{score}\n")
+
+            with open(averaged_scores_path, "w") as averaged_scores_file:
+                averaged_scores_file.write("episode,average_score\n")
+
                 for i, average_score in enumerate(averaged_scores):
-                    f.write(f"{i*backup_interval+1},{average_score}\n")
+                    averaged_scores_file.write(f"{i*backup_interval+1},{average_score}\n")
+
                 if((steps-1)%backup_interval != 0):
-                    f.write(f"{steps-1},{np.mean(score_buffer)}\n")
-            with open(epsilons_path, "w") as f:
-                f.write("episode,epsilon\n")
+                    averaged_scores_file.write(f"{steps-1},{np.mean(score_buffer)}\n")
+
+            with open(epsilons_path, "w") as epsilons_file:
+                epsilons_file.write("episode,epsilon\n")
+
                 for i, epsilon in enumerate(epsilons):
-                    f.write(f"{i+1},{epsilon}\n")
+                    epsilons_file.write(f"{i+1},{epsilon}\n")
             
             backup_path = f"{path}/final_({average_score:.2f}).h5"
             log(f"Training finished! Saving as \"{backup_path}\"")
@@ -384,7 +391,7 @@ class DQNAgentDoubleDPrioritizedReplayBuffer(ReplayBuffer):
         max_priority = np.max(self.priority_buffer[:self.len]) if self.len > 0 else 1.0
         self.priority_buffer[i] = max_priority  
 
-        super.push(state, action, reward, next_state, done)
+        super().push(state, action, reward, next_state, done)
         
     def sample(self, batch_size, beta):
         if batch_size == 0 or batch_size > self.len:
@@ -405,7 +412,8 @@ class DQNAgentDoubleDPrioritizedReplayBuffer(ReplayBuffer):
         return choices, states, actions, rewards, next_states, dones, weights
     
     def update_priorities(self, indices, losses):
-        self.priority_buffer[indices] = (losses + 1e-6)**self.alpha
+        clipped = np.maximum(losses, 0.01)
+        self.priority_buffer[indices] = losses**self.alpha
     
     def __len__(self):
         return self.len
@@ -418,17 +426,16 @@ class DQNAgentDoubleDPrioritizedReplay(DQNAgent):
         ))
 
         self.initial_beta = initial_beta
-        self.beta = initial_beta
-        self.beta_increment = (1 - initial_beta) / self.episodes / self.replays_per_episode
 
-    def update_model(self):
+    def update_model(self, episode=0):
         """
         Perform experience replay to train the model.
         Samples a batch of experiences from memory, computes target Q-values,
         and updates the model using the computed loss.
         """
+        beta = min(self.initial_beta + (1 - self.initial_beta) * episode / self.episodes, 1)
         
-        sample = self.memory.sample(self.batch_size, beta=self.beta)
+        sample = self.memory.sample(self.batch_size, beta=beta)
 
         if (sample == None):
             return None
@@ -447,7 +454,7 @@ class DQNAgentDoubleDPrioritizedReplay(DQNAgent):
         # We use one-hot and reduce-sum to keep only the q for the selected action
         #   [ A, B, C, D ] * [ 0, 0, 1, 0 ] -> [ 0, 0, C, 0 ]
         #   reduce_sum([0, 0, C, 0]) -> 0 + 0 + C + 0 = C
-        q_values = self.q_network(states).gather(1, actions.unsqueeze(1)).squeeze(1)
+        q_values = self.q_network(states).gather(1, actions.unsqueeze(1)).squeeze(-1)
         
         # Get maximum q-value according to target network for the next state
         # And use it to approximate the next state
@@ -459,6 +466,7 @@ class DQNAgentDoubleDPrioritizedReplay(DQNAgent):
         expected_q_values = rewards + self.gamma * next_q_values * (1 - dones)
 
         errors = q_values - expected_q_values # Calculate error not squared, to use it for the priorities
+
         new_priorities = errors.abs().detach().cpu().numpy()
         self.memory.update_priorities(choices, new_priorities)
 
@@ -468,7 +476,5 @@ class DQNAgentDoubleDPrioritizedReplay(DQNAgent):
         self.optimizer.zero_grad()
         loss.backward()
         self.optimizer.step()
-
-        self.beta = min(self.beta + self.beta_increment, 1.0)
 
         return loss

@@ -30,11 +30,14 @@ class DQN(torch.nn.Module):
         return self.layer2_output(x)
     
 class ReplayBuffer():
+    # Buffer uses a circular buffer to store experiences
     def __init__(self, buffer_size=10000, state_size=8):
         self.len = 0
+        # Creates a pointer to the beginning of the buffer
         self.pos = 0
         self.buffer_size = buffer_size
 
+        # It stores one array per part of the transition
         self.state_buffer = np.zeros((buffer_size, state_size), dtype=np.float32)
         self.action_buffer = np.zeros((buffer_size,), dtype=np.int64)
         self.reward_buffer = np.zeros((buffer_size,), dtype=np.float32)
@@ -43,12 +46,14 @@ class ReplayBuffer():
 
     def push(self, state, action, reward, next_state, done):
         i = self.pos
+        # Writes the transition
         self.state_buffer[i] = state
         self.action_buffer[i] = action
         self.reward_buffer[i] = reward
         self.next_state_buffer[i] = next_state
         self.done_buffer[i] = done
 
+        # Then updates the position of the pointer
         self.pos = (self.pos + 1) % self.buffer_size
         self.len = min(self.len + 1, self.buffer_size)
         
@@ -56,6 +61,7 @@ class ReplayBuffer():
         if batch_size == 0 or batch_size > self.len:
             return None
 
+        # We choose based on len to avoid choosing from the empty part of the buffer
         choices = np.random.choice(self.len, batch_size, replace=False)
 
         states = self.state_buffer[choices]
@@ -195,13 +201,11 @@ class DQNAgent():
         self.q_network.train()
 
         # Calculate q(s,a) according to the q-network
-        # We use one-hot and reduce-sum to keep only the q for the selected action
-        #   [ A, B, C, D ] * [ 0, 0, 1, 0 ] -> [ 0, 0, C, 0 ]
-        #   reduce_sum([0, 0, C, 0]) -> 0 + 0 + C + 0 = C
+        # We pick the q-value for the action taken
         q_values = self.q_network(states).gather(1, actions.unsqueeze(1)).squeeze(1)
         
         # Get maximum q-value according to target network for the next state
-        # And use it to approximate the next state
+        # And use it to approximate the value of the next state
         with torch.no_grad():
             next_q_values = self.target_network(next_states).max(1)[0]
         
@@ -385,10 +389,12 @@ class DQNAgentDoubleDPrioritizedReplayBuffer(ReplayBuffer):
     def __init__(self, buffer_size=10000, state_size=8, alpha=0.6):
         super().__init__(buffer_size=buffer_size, state_size=state_size)
         self.alpha = alpha
+        # We add a new buffer
         self.priority_buffer = np.zeros((buffer_size,), dtype=np.float32)
 
     def push(self, state, action, reward, next_state, done):
         i = self.pos
+        # New transitions get the maximum priority
         max_priority = np.max(self.priority_buffer[:self.len]) if self.len > 0 else 1.0
         self.priority_buffer[i] = max_priority  
 
@@ -400,8 +406,10 @@ class DQNAgentDoubleDPrioritizedReplayBuffer(ReplayBuffer):
 
         probabilities = self.priority_buffer[:self.len] / np.sum(self.priority_buffer[:self.len])
 
+        # Choose indices with probabilities proportional to their priorities
         choices = np.random.choice(self.len, batch_size, replace=False, p=probabilities)
 
+        # Also calculates weights for the correction
         weights = (self.len * probabilities[choices]) ** (-beta)
         weights /= weights.max()
 
@@ -413,8 +421,9 @@ class DQNAgentDoubleDPrioritizedReplayBuffer(ReplayBuffer):
         return choices, states, actions, rewards, next_states, dones, weights
     
     def update_priorities(self, indices, losses):
+        # Clips the losses to avoid division by zero
         clipped = np.maximum(losses, 0.01)
-        self.priority_buffer[indices] = losses**self.alpha
+        self.priority_buffer[indices] = clipped**self.alpha
     
     def __len__(self):
         return self.len
@@ -452,13 +461,12 @@ class DQNAgentDoubleDPrioritizedReplay(DQNAgent):
         self.q_network.train()
 
         # Calculate q(s,a) according to the q-network
-        # We use one-hot and reduce-sum to keep only the q for the selected action
-        #   [ A, B, C, D ] * [ 0, 0, 1, 0 ] -> [ 0, 0, C, 0 ]
-        #   reduce_sum([0, 0, C, 0]) -> 0 + 0 + C + 0 = C
+        # We pick the q-value for the action taken
         q_values = self.q_network(states).gather(1, actions.unsqueeze(1)).squeeze(-1)
         
-        # Get maximum q-value according to target network for the next state
-        # And use it to approximate the next state
+        # Get the q-value according to target network for the next state
+        # of the action the q-network would have taken
+        # And use it to approximate the value of the next state
         with torch.no_grad():
             arg_max = self.q_network(next_states).argmax(1)
             next_q_values = self.target_network(next_states).gather(1, arg_max.unsqueeze(1)).squeeze(-1)

@@ -2,9 +2,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Cargar datos de los archivos CSV correctos
-scores = pd.read_csv('training/dqn_dqps_14000/summary_scores.csv')  # archivo con 'score'
-averaged_scores = pd.read_csv('training/dqn_dqps_14000/summary_averaged_scores.csv')  # archivo con 'average_score'
-epsilons = pd.read_csv('training/dqn_dqps_14000/summary_epsilons.csv')  # archivo con 'epsilon'
+scores = pd.read_csv('training/v3_dqn_dqps_1500_0.001_epsilon_arreglado/summary_scores.csv')  # archivo con 'score'
+averaged_scores = pd.read_csv('training/v3_dqn_dqps_1500_0.001_epsilon_arreglado/summary_averaged_scores.csv')  # archivo con 'average_score'
+epsilons = pd.read_csv('training/v3_dqn_dqps_1500_0.001_epsilon_arreglado/summary_epsilons.csv')  # archivo con 'epsilon'
 
 # Gráfica de recompensas acumuladas por episodio
 plt.figure(figsize=(12,6))

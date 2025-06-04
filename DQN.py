@@ -173,7 +173,7 @@ class DQNAgent():
 
         return next_state, reward, done, action
     
-    def update_model(self):
+    def update_model(self, episode=0):
         """
         Perform experience replay to train the model.
         Samples a batch of experiences from memory, computes target Q-values,
@@ -329,8 +329,8 @@ class DQNAgent():
                         self.update_model(episode=episode)
                         self.update_target_network()
                     
-                self.epsilon = max(self.epsilon * self.epsilon_decay, self.epsilon_min)
-
+                    self.epsilon = max(self.epsilon * self.epsilon_decay, self.epsilon_min)
+               
                 epsilons.append(self.epsilon)
                 score_buffer.append(score)
                 scores.append(score)

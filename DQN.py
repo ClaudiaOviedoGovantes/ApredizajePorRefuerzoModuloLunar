@@ -329,7 +329,7 @@ class DQNAgent():
                         self.update_model(episode=episode)
                         self.update_target_network()
                     
-                    self.epsilon = max(self.epsilon * self.epsilon_decay, self.epsilon_min)
+                self.epsilon = max(self.epsilon * self.epsilon_decay, self.epsilon_min)
 
                 epsilons.append(self.epsilon)
                 score_buffer.append(score)
@@ -365,7 +365,7 @@ class DQNAgent():
                     averaged_scores_file.write(f"{i*backup_interval+1},{average_score}\n")
 
                 if((steps-1)%backup_interval != 0):
-                    averaged_scores_file.write(f"{steps-1},{np.mean(score_buffer)}\n")
+                    averaged_scores_file.write(f"{self.episodes},{np.mean(score_buffer)}\n")
 
             with open(epsilons_path, "w") as epsilons_file:
                 epsilons_file.write("episode,epsilon\n")

@@ -245,7 +245,7 @@ class DQNAgent():
         None
         """
         # cargar el modelo desde el path indicado
-        state_dict = torch.load(path, weights_only=True)
+        state_dict = torch.load(path, weights_only=True, map_location=torch.device(self.device))
 
         if (state_dict == None):
             raise ValueError(f"Tried to load model \"{path}\" resulted in None!")
